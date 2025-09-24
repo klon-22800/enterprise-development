@@ -2,8 +2,17 @@
 
 namespace Hospital.Core.Domain.TestData;
 
+/// <summary>
+/// Provides methods to generate test data for the hospital system.
+/// </summary>
 public class DataGenerator
 {
+    /// <summary>
+    /// Generates sample patients, doctors, specializations, and appointments.
+    /// </summary>
+    /// <returns>
+    /// A tuple containing arrays of patients, doctors, specializations, and appointments.
+    /// </returns>
     public static (Patient[] patients, Doctor[] doctors, Specialization[] specializations, Appointment[] appointments) GenerateData()
     {
         var specializations = new[]
@@ -13,7 +22,7 @@ public class DataGenerator
             new Specialization { Id = 3, Name = "Офтальмолог" },
             new Specialization { Id = 4, Name = "Невролог" },
             new Specialization { Id = 5, Name = "Педиатр" },
-            new Specialization { Id = 6, Name = "Кардиолог" },
+            new Specialization { Id = 6, Name = "Проктолог" },
             new Specialization { Id = 7, Name = "Дерматолог" },
             new Specialization { Id = 8, Name = "Ортопед" },
             new Specialization { Id = 9, Name = "Эндокринолог" },
@@ -26,12 +35,12 @@ public class DataGenerator
             new Doctor { PassportNumber = "2222 200002", Name = "Петр", Surname = "Петров", Patronymic = "Петрович", BirthDate = new DateOnly(1980, 3, 21), Specialization = specializations[1], Expirience = 15 },
             new Doctor { PassportNumber = "3333 300003", Name = "Анна", Surname = "Смирнова", Patronymic = "Сергеевна", BirthDate = new DateOnly(1988, 7, 9), Specialization = specializations[2], Expirience = 10 },
             new Doctor { PassportNumber = "4444 400004", Name = "Сергей", Surname = "Сидоров", Patronymic = "Андреевич", BirthDate = new DateOnly(1970, 11, 3), Specialization = specializations[3], Expirience = 25 },
-            new Doctor { PassportNumber = "5555 500005", Name = "Мария", Surname = "Кузнецова", Patronymic = "Олеговна", BirthDate = new DateOnly(1990, 1, 17), Specialization = specializations[4], Expirience = 7 },
-            new Doctor { PassportNumber = "6666 600006", Name = "Дмитрий", Surname = "Орлов", Patronymic = "Михайлович", BirthDate = new DateOnly(1983, 6, 30), Specialization = specializations[5], Expirience = 12 },
+            new Doctor { PassportNumber = "6666 600006", Name = "Дмитрий", Surname = "Орлов", Patronymic = "Михайлович", BirthDate = new DateOnly(1983, 6, 30), Specialization = specializations[4], Expirience = 12 },
+            new Doctor { PassportNumber = "6412 100503", Name = "Михаил", Surname = "Косенко", Patronymic = "Романович", BirthDate = new DateOnly(1990, 1, 17), Specialization = specializations[5], Expirience = 7 },
             new Doctor { PassportNumber = "7777 700007", Name = "Ольга", Surname = "Морозова", Patronymic = "Александровна", BirthDate = new DateOnly(1985, 4, 12), Specialization = specializations[6], Expirience = 9 },
             new Doctor { PassportNumber = "8888 800008", Name = "Алексей", Surname = "Федоров", Patronymic = "Игоревич", BirthDate = new DateOnly(1978, 9, 23), Specialization = specializations[7], Expirience = 18 },
             new Doctor { PassportNumber = "9999 900009", Name = "Елена", Surname = "Соболева", Patronymic = "Степановна", BirthDate = new DateOnly(1992, 2, 2), Specialization = specializations[8], Expirience = 5 },
-            new Doctor { PassportNumber = "0000 100010", Name = "Виктор", Surname = "Егоров", Patronymic = "Владимирович", BirthDate = new DateOnly(1969, 12, 25), Specialization = specializations[9], Expirience = 30 },
+            new Doctor { PassportNumber = "0000 100010", Name = "Вячеслав", Surname = "Ряхов", Patronymic = "Вячеславович", BirthDate = new DateOnly(1969, 12, 25), Specialization = specializations[9], Expirience = 30 },
         };
 
         var patients = new[]

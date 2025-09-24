@@ -1,18 +1,26 @@
-using Hospital.Core.Domain.Models;
 using Hospital.Core.Tests.Fixtures;
-using System.Linq;
 
 namespace Hospital.Core.Tests;
 
-public class UnitTest1 : IClassFixture<TestDataFixture>
+/// <summary>
+/// Contains unit tests for hospital core functionality using test data fixture.
+/// </summary>
+public class UnitTest : IClassFixture<TestDataFixture>
 {
     private readonly TestDataFixture _fixture;
 
-    public UnitTest1(TestDataFixture fixture)
+
+    /// <summary>
+    /// Initializes a new instance of the class.
+    /// </summary>
+    public UnitTest(TestDataFixture fixture)
     {
         _fixture = fixture;
     }
 
+    /// <summary>
+    /// Tests retrieving doctors with experience of 10 years or more.
+    /// </summary>
     [Fact]
     public void DoctorsWithExperienceMoreThan10()
     {
@@ -38,6 +46,9 @@ public class UnitTest1 : IClassFixture<TestDataFixture>
         Assert.Equal(expected, passportNumbers);
     }
 
+    /// <summary>
+    /// Tests retrieving patients of a specific doctor.
+    /// </summary>
     [Fact]
     public void PatientsOfSpecificDoctor()
     {
@@ -61,6 +72,9 @@ public class UnitTest1 : IClassFixture<TestDataFixture>
         Assert.Equal(expected, patientPassports);
     }
 
+    /// <summary>
+    /// Tests counting repeated appointments per patient in the last month.
+    /// </summary>
     [Fact]
     public void CountOfRepeatedAppointmentsPerPatientLastMonth()
     {
@@ -89,6 +103,9 @@ public class UnitTest1 : IClassFixture<TestDataFixture>
         Assert.Equal(expected, repeatedCounts);
     }
 
+    /// <summary>
+    /// Tests retrieving patients over 30 years old with appointments to multiple doctors.
+    /// </summary>
     [Fact]
     public void PatientsOver30WithAppointmentsToMultipleDoctors()
     {
@@ -116,6 +133,9 @@ public class UnitTest1 : IClassFixture<TestDataFixture>
         Assert.Equal(expected, patientPassports);
     }
 
+    /// <summary>
+    /// Tests retrieving appointments in the current month for a specific cabinet.
+    /// </summary>
     [Fact]
     public void AppointmentsCurrentMonthInSpecificCabinet()
     {
