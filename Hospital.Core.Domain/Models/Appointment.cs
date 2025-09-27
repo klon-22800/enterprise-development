@@ -6,9 +6,14 @@
 public class Appointment
 {
     /// <summary>
+    /// Surrogate primary key.
+    /// </summary>
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// The date and time of the appointment.
     /// </summary>
-    public DateTime AppointmentTime { get; set; }
+    public required DateTime AppointmentTime { get; set; } 
 
     /// <summary>
     /// The number of the cabinet where the appointment will take place.
@@ -18,7 +23,7 @@ public class Appointment
     /// <summary>
     /// Indicates whether the appointment is a recurring one.
     /// </summary>
-    public bool IsRepeated { get; set; }
+    public bool IsRepeated { get; set; } 
 
     /// <summary>
     /// The patient attending the appointment.

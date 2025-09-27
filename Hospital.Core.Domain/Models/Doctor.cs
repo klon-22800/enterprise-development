@@ -6,6 +6,11 @@
 public class Doctor
 {
     /// <summary>
+    /// Surrogate primary key.
+    /// </summary>
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// The doctor's passport number.
     /// </summary>
     public required string PassportNumber { get; set; }
@@ -21,14 +26,14 @@ public class Doctor
     public required string Surname { get; set; }
 
     /// <summary>
-    /// The doctor's patronymic (middle name).
+    /// The doctor's patronymic.
     /// </summary>
-    public required string Patronymic { get; set; }
+    public string? Patronymic { get; set; }
 
     /// <summary>
     /// The doctor's date of birth.
     /// </summary>
-    public DateOnly BirthDate { get; set; }
+    public required DateOnly BirthDate { get; set; }
 
     /// <summary>
     /// The doctor's specialization.
@@ -38,5 +43,5 @@ public class Doctor
     /// <summary>
     /// The doctor's years of experience.
     /// </summary>
-    public int Expirience { get; set; }
+    public required int Expirience { get; set; }
 }

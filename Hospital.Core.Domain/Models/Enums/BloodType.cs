@@ -1,4 +1,4 @@
-﻿namespace Hospital.Core.Domain.Models;
+﻿namespace Hospital.Core.Domain.Models.Enums;
 
 /// <summary>
 /// Represents blood types.

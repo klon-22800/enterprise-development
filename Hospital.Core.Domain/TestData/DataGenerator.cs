@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Domain.Models;
+using Hospital.Core.Domain.Models.Enums;
 
 namespace Hospital.Core.Domain.TestData;
 
