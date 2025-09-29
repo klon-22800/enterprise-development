@@ -5,7 +5,7 @@ namespace Hospital.Core.Tests;
 /// <summary>
 /// Contains unit tests for hospital core functionality using test data fixture.
 /// </summary>
-public class UnitTest(TestDataFixture fixture) : IClassFixture<TestDataFixture>
+public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixture>
 {
     private readonly TestDataFixture _fixture = fixture;
 
@@ -123,7 +123,7 @@ public class UnitTest(TestDataFixture fixture) : IClassFixture<TestDataFixture>
         ];
 
         var resultIds = _fixture.Appointments
-            .Where(a => a.CabinetNumber == cabinetNumber
+            .Where(a => a.OfficeNumber == cabinetNumber
                         && a.AppointmentTime.Year == today.Year
                         && a.AppointmentTime.Month == today.Month)
             .OrderBy(a => a.AppointmentTime)

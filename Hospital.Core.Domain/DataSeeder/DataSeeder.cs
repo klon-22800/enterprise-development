@@ -64,16 +64,16 @@ public static class DataSeeder
     /// </summary>
     public static Appointment[] SeedAppointments(Patient[] patients, Doctor[] doctors) => new[]
     {
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000001"), AppointmentTime = new DateTime(2025, 1, 1, 9, 0, 0), CabinetNumber = "101", IsRepeated = false, Patient = patients[0], Doctor = doctors[0] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000002"), AppointmentTime = new DateTime(2025, 3, 1, 10, 0, 0), CabinetNumber = "102", IsRepeated = true, Patient = patients[1], Doctor = doctors[1] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000003"), AppointmentTime = new DateTime(2025, 5, 1, 11, 0, 0), CabinetNumber = "103", IsRepeated = false, Patient = patients[2], Doctor = doctors[2] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000004"), AppointmentTime = new DateTime(2025, 7, 1, 12, 0, 0), CabinetNumber = "104", IsRepeated = false, Patient = patients[3], Doctor = doctors[3] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000005"), AppointmentTime = new DateTime(2025, 9, 1, 13, 0, 0), CabinetNumber = "105", IsRepeated = true, Patient = patients[4], Doctor = doctors[4] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000006"), AppointmentTime = new DateTime(2025, 11, 1, 14, 0, 0), CabinetNumber = "106", IsRepeated = false, Patient = patients[5], Doctor = doctors[5] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000007"), AppointmentTime = new DateTime(2025, 2, 1, 15, 0, 0), CabinetNumber = "107", IsRepeated = true, Patient = patients[6], Doctor = doctors[6] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000008"), AppointmentTime = new DateTime(2025, 4, 1, 16, 0, 0), CabinetNumber = "108", IsRepeated = false, Patient = patients[7], Doctor = doctors[7] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000009"), AppointmentTime = new DateTime(2025, 6, 1, 17, 0, 0), CabinetNumber = "109", IsRepeated = true, Patient = patients[8], Doctor = doctors[8] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000010"), AppointmentTime = new DateTime(2025, 8, 1, 18, 0, 0), CabinetNumber = "110", IsRepeated = false, Patient = patients[9], Doctor = doctors[9] },
-        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000011"), AppointmentTime = new DateTime(2025, 2, 1, 10, 0, 0), CabinetNumber = "101", IsRepeated = false, Patient = patients[9], Doctor = doctors[0] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000001"), AppointmentTime = new DateTime(2025, 1, 1, 9, 0, 0), OfficeNumber = "101", IsRepeated = false, Patient = patients[0], Doctor = doctors[0] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000002"), AppointmentTime = new DateTime(2025, 3, 1, 10, 0, 0), OfficeNumber = "102", IsRepeated = true, Patient = patients[1], Doctor = doctors[1] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000003"), AppointmentTime = new DateTime(2025, 5, 1, 11, 0, 0), OfficeNumber = "103", IsRepeated = false, Patient = patients[2], Doctor = doctors[2] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000004"), AppointmentTime = new DateTime(2025, 7, 1, 12, 0, 0), OfficeNumber = "104", IsRepeated = false, Patient = patients[3], Doctor = doctors[3] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000005"), AppointmentTime = new DateTime(2025, 9, 1, 13, 0, 0), OfficeNumber = "105", IsRepeated = true, Patient = patients[4], Doctor = doctors[4] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000006"), AppointmentTime = new DateTime(2025, 11, 1, 14, 0, 0), OfficeNumber = "106", IsRepeated = false, Patient = patients[5], Doctor = doctors[5] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000007"), AppointmentTime = new DateTime(2025, 2, 1, 15, 0, 0), OfficeNumber = "107", IsRepeated = true, Patient = patients[6], Doctor = doctors[6] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000008"), AppointmentTime = new DateTime(2025, 4, 1, 16, 0, 0), OfficeNumber = "108", IsRepeated = false, Patient = patients[7], Doctor = doctors[7] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000009"), AppointmentTime = new DateTime(2025, 6, 1, 17, 0, 0), OfficeNumber = "109", IsRepeated = true, Patient = patients[8], Doctor = doctors[8] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000010"), AppointmentTime = new DateTime(2025, 8, 1, 18, 0, 0), OfficeNumber = "110", IsRepeated = false, Patient = patients[9], Doctor = doctors[9] },
+        new Appointment { Id = Guid.Parse("a0000000-0000-0000-0000-000000000011"), AppointmentTime = new DateTime(2025, 2, 1, 10, 0, 0), OfficeNumber = "101", IsRepeated = false, Patient = patients[9], Doctor = doctors[0] },
     };
 }

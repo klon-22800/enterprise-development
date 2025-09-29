@@ -18,7 +18,7 @@ public class Appointment
     /// <summary>
     /// The number of the cabinet where the appointment will take place.
     /// </summary>
-    public required string CabinetNumber { get; set; }
+    public required string OfficeNumber { get; set; }
 
     /// <summary>
     /// Indicates whether the appointment is a recurring one.
