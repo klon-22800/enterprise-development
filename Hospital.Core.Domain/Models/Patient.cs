@@ -8,7 +8,7 @@ namespace Hospital.Core.Domain.Models;
 public class Patient
 {
     /// <summary>
-    /// Surrogate primary key.
+    /// Surrogate key.
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -28,7 +28,7 @@ public class Patient
     public required string Surname { get; set; }
 
     /// <summary>
-    /// The patient's patronymic (middle name).
+    /// The patient's patronymic.
     /// </summary>
     public string? Patronymic { get; set; } 
 

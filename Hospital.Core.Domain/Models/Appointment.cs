@@ -6,7 +6,7 @@
 public class Appointment
 {
     /// <summary>
-    /// Surrogate primary key.
+    /// Surrogate key.
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 

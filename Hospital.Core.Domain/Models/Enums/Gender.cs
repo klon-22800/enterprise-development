@@ -1,7 +1,7 @@
-﻿namespace Hospital.Core.Domain.Models.Enums;
+﻿ыnamespace Hospital.Core.Domain.Models.Enums;
 
 /// <summary>
-/// Represents the gender of peoples
+/// Represents the gender of people.
 /// </summary>
 public enum Gender
 {

@@ -6,7 +6,7 @@
 public class Specialization
 {
     /// <summary>
-    /// The unique identifier of the specialization.
+    /// Surrogate key..
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 

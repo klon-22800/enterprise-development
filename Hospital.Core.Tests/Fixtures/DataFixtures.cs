@@ -11,31 +11,31 @@ public class TestDataFixture
     /// <summary>
     /// Test list of Patients
     /// </summary>
-    public List<Patient> Patients { get; }
+    public Patient[] Patients { get; }
 
     /// <summary>
     /// Test list of Doctors
     /// </summary>
-    public List<Doctor> Doctors { get; }
+    public Doctor[] Doctors { get; }
 
     /// <summary>
     /// Test list of Specializations
     /// </summary>
-    public List<Specialization> Specializations { get; }
+    public Specialization[] Specializations { get; }
 
     /// <summary>
     /// Test list of Appointments
     /// </summary>
-    public List<Appointment> Appointments { get; }
+    public Appointment[] Appointments { get; }
 
     /// <summary>
     /// Initializes test data
     /// </summary>
     public TestDataFixture()
     {
-        Specializations = DataSeeder.SeedSpecializations().ToList();
-        Doctors = DataSeeder.SeedDoctors(Specializations.ToArray()).ToList();
-        Patients = DataSeeder.SeedPatients().ToList();
-        Appointments = DataSeeder.SeedAppointments(Patients.ToArray(), Doctors.ToArray()).ToList();
+        Specializations = DataSeeder.SeedSpecializations();
+        Doctors = DataSeeder.SeedDoctors(Specializations);
+        Patients = DataSeeder.SeedPatients();
+        Appointments = DataSeeder.SeedAppointments(Patients, Doctors);
     }
 }
