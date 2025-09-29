@@ -1,25 +1,28 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Core.Domain.TestData;
+using Hospital.Core.Domain.DataSeeder;
 
 namespace Hospital.Core.Tests.Fixtures;
 
 /// <summary>
 /// Fixture for Unit tests
 /// </summary>
-public class TestDataFixture : IDisposable
+public class TestDataFixture
 {
     /// <summary>
     /// Test list of Patients
     /// </summary>
     public List<Patient> Patients { get; }
+
     /// <summary>
     /// Test list of Doctors
     /// </summary>
     public List<Doctor> Doctors { get; }
+
     /// <summary>
     /// Test list of Specializations
     /// </summary>
     public List<Specialization> Specializations { get; }
+
     /// <summary>
     /// Test list of Appointments
     /// </summary>
@@ -30,18 +33,9 @@ public class TestDataFixture : IDisposable
     /// </summary>
     public TestDataFixture()
     {
-        var (patients, doctors, specializations, appointments) = DataGenerator.GenerateData();
-
-        Patients = patients.ToList();
-        Doctors = doctors.ToList();
-        Specializations = specializations.ToList();
-        Appointments = appointments.ToList();
-    }
-
-    /// <summary>
-    /// Resource disposing
-    /// </summary>
-    public void Dispose()
-    {
+        Specializations = DataSeeder.SeedSpecializations().ToList();
+        Doctors = DataSeeder.SeedDoctors(Specializations.ToArray()).ToList();
+        Patients = DataSeeder.SeedPatients().ToList();
+        Appointments = DataSeeder.SeedAppointments(Patients.ToArray(), Doctors.ToArray()).ToList();
     }
 }
