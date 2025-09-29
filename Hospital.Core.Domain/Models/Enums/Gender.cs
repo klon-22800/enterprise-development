@@ -1,4 +1,4 @@
-﻿ыnamespace Hospital.Core.Domain.Models.Enums;
+﻿namespace Hospital.Core.Domain.Models.Enums;
 
 /// <summary>
 /// Represents the gender of people.
