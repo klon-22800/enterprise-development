@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDbContext<HospitalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("HospitalDb")));
 
@@ -24,12 +23,14 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IRepository<Appointment>, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
+
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 
 using (var scope = app.Services.CreateScope())
 {

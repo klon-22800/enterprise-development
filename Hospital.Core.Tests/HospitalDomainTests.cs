@@ -1,4 +1,5 @@
 using Hospital.Core.Tests.Fixtures;
+using Hospital.Infrastructure.Repositories;
 
 namespace Hospital.Core.Tests;
 
@@ -7,6 +8,8 @@ namespace Hospital.Core.Tests;
 /// </summary>
 public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixture>
 {
+
+    //Тут будет новая фикстура из аналитиксервиса 
     private readonly TestDataFixture _fixture = fixture;
 
     /// <summary>
@@ -25,13 +28,9 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
             Guid.Parse("d0000000-0000-0000-0000-000000000008"),
         ];
 
-        var resultIds = _fixture.Doctors
-            .Where(d => d.Experience >= 10)
-            .OrderBy(d => d.Id)
-            .Select(d => d.Id)
-            .ToList();
+        var resultIds = analyticsRepository.GetDoctorsWithExperienceOver10Async();
 
-        Assert.Equal(expectedIds, resultIds);
+        Assert.Equal(expectedIds, (IEnumerable<Guid>?)resultIds);
     }
 
     /// <summary>
