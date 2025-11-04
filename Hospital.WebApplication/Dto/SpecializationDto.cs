@@ -1,0 +1,1 @@
+﻿public record SpecializationDto(string Name);

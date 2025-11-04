@@ -36,12 +36,17 @@ public class Doctor
     public required DateOnly BirthDate { get; set; }
 
     /// <summary>
+    /// The doctor's specialization's id.
+    /// </summary>
+    public Guid SpecializationId { get; set; }
+
+    /// <summary>
     /// The doctor's specialization.
     /// </summary>
-    public required Specialization Specialization { get; set; }
+    public Specialization? Specialization { get; set; }
 
     /// <summary>
     /// The doctor's years of experience.
     /// </summary>
-    public required int Expirience { get; set; }
+    public required int Experience { get; set; }
 }

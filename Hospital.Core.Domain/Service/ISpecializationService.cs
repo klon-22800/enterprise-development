@@ -4,7 +4,7 @@ namespace Hospital.Core.Domain.Service;
 
 public interface ISpecializationService
 {
-    public Task<Guid> CreateSpecializationAsync(Specialization entity);
+    public Task<Guid> CreateSpecializationAsync(string name);
     public Task<List<Specialization>> GetAllSpecializationsAsync();
     public Task<Specialization?> GetSpecializationAsync(Guid id);
     public Task<Specialization?> UpdateSpecializationAsync(Guid id, Specialization entity);

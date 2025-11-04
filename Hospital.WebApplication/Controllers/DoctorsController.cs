@@ -1,5 +1,6 @@
 ﻿using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Service;
+using Hospital.WebApplication.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WebApplication.Controllers;
@@ -35,10 +36,10 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Create([FromBody] Doctor doctor)
+    public async Task<ActionResult> Create([FromBody] DoctorDto doctorDto)
     {
         logger.LogInformation("Called Create in DoctorController");
-        var id = await service.CreateDoctorAsync(doctor);
+        var id = await service.CreateDoctorAsync(doctorDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
@@ -46,10 +47,10 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Doctor>> Update(Guid id, [FromBody] Doctor doctor)
+    public async Task<ActionResult<Doctor>> Update(Guid id, [FromBody] DoctorDto doctorDto)
     {
         logger.LogInformation("Called Update in DoctorController");
-        var updated = await service.UpdateDoctorAsync(id, doctor);
+        var updated = await service.UpdateDoctorAsync(id, doctorDto.ToDomain());
         if (updated is null) return NotFound();
         return Ok(updated);
     }

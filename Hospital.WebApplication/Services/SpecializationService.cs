@@ -6,8 +6,8 @@ namespace Hospital.WebApplication.Services;
 
 public class SpecializationService(IRepository<Specialization> repository) : ISpecializationService
 {
-    public async Task<Guid> CreateSpecializationAsync(Specialization entity) =>
-        await repository.CreateAsync(entity);
+    public async Task<Guid> CreateSpecializationAsync(string name) =>
+        await repository.CreateAsync(new Specialization { Name = name});
 
     public async Task<List<Specialization>> GetAllSpecializationsAsync() =>
         await repository.GetAllAsync();

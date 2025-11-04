@@ -6,7 +6,6 @@ namespace Hospital.Infrastructure.Repositories;
 
 public class AppointmentRepository(HospitalDbContext context) : IRepository<Appointment>
 {
-
     public async Task<List<Appointment>> GetAllAsync()
         => await context.Appointments
             .Include(a => a.Doctor)

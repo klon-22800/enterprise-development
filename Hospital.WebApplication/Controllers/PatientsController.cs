@@ -1,5 +1,6 @@
 ﻿using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Service;
+using Hospital.WebApplication.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WebApplication.Controllers;
@@ -26,18 +27,18 @@ public class PatientController(IPatientService service, ILogger<PatientControlle
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] Patient patient)
+    public async Task<ActionResult> Create([FromBody] PatientDto patientDto)
     {
         logger.LogInformation("Called Create in PatientController");
-        var id = await service.CreatePatientAsync(patient);
+        var id = await service.CreatePatientAsync(patientDto.ToDomain());
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<Patient>> Update(Guid id, [FromBody] Patient patient)
+    public async Task<ActionResult<Patient>> Update(Guid id, [FromBody] PatientDto patientDto)
     {
         logger.LogInformation("Called Update in PatientController");
-        var updated = await service.UpdatePatientAsync(id, patient);
+        var updated = await service.UpdatePatientAsync(id, patientDto.ToDomain());
         if (updated is null) return NotFound();
         return Ok(updated);
     }

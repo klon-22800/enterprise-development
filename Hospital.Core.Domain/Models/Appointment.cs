@@ -23,15 +23,25 @@ public class Appointment
     /// <summary>
     /// Indicates whether the appointment is a recurring one.
     /// </summary>
-    public bool IsRepeated { get; set; } 
+    public bool IsRepeated { get; set; }
+
+    /// <summary>
+    /// The patient id attending the appointment.
+    /// </summary>
+    public  Guid PatientId { get; set; }
+
+    /// <summary>
+    /// The doctor id who will see the patient.
+    /// </summary>
+    public Guid DoctorId { get; set; }
 
     /// <summary>
     /// The patient attending the appointment.
     /// </summary>
-    public required Patient Patient { get; set; }
+    public  Patient? Patient { get; set; }
 
     /// <summary>
     /// The doctor who will see the patient.
     /// </summary>
-    public required Doctor Doctor { get; set; }
+    public  Doctor? Doctor { get; set; }
 }

@@ -39,7 +39,7 @@ public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
         doctor.Patronymic = entity.Patronymic;
         doctor.BirthDate = entity.BirthDate;
         doctor.Specialization = entity.Specialization;
-        doctor.Expirience = entity.Expirience;
+        doctor.Experience = entity.Experience;
 
         await context.SaveChangesAsync();
         return doctor;

@@ -15,6 +15,7 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     {
         logger.LogInformation("Called GetAll in SpecializationController");
         var specializations = await service.GetAllSpecializationsAsync();
+        //Specialization -> Dto 
         return Ok(specializations);
     }
 
@@ -33,10 +34,11 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Create([FromBody] Specialization specialization)
+    // ТУТ ПРИНИМАТЬ DTO БЕЗ АЙДИШШНИКА БЛИН
+    public async Task<ActionResult> Create([FromBody] SpecializationDto specialization)
     {
         logger.LogInformation("Called Create in SpecializationController");
-        var id = await service.CreateSpecializationAsync(specialization);
+        var id = await service.CreateSpecializationAsync(specialization.Name);
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 

@@ -26,7 +26,7 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
         ];
 
         var resultIds = _fixture.Doctors
-            .Where(d => d.Expirience >= 10)
+            .Where(d => d.Experience >= 10)
             .OrderBy(d => d.Id)
             .Select(d => d.Id)
             .ToList();
