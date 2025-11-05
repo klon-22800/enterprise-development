@@ -1,24 +1,25 @@
 using Hospital.Core.Tests.Fixtures;
-using Hospital.Infrastructure.Repositories;
+using Hospital.WebApplication.Services;
+using Hospital.Core.Domain.Models;
 
 namespace Hospital.Core.Tests;
 
 /// <summary>
-/// Contains unit tests for hospital core functionality using test data fixture.
+/// Contains unit tests for hospital analytics functionality using test data fixture.
 /// </summary>
-public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDataFixture>
+public class HospitalDomainTests(AnalyticsFixture fixture) : IClassFixture<AnalyticsFixture>
 {
-
-    //Тут будет новая фикстура из аналитиксервиса 
-    private readonly TestDataFixture _fixture = fixture;
+    private readonly AnalyticsService _service = fixture.Service;
 
     /// <summary>
     /// Tests retrieving doctors with experience of 10 years or more.
     /// </summary>
     [Fact]
-    public void GetDoctors_WithExperienceOver10_ReturnsCorrectDoctors()
+    public async Task GetDoctors_WithExperienceOver10_ReturnsCorrectDoctors()
     {
-        List<Guid> expectedIds = [
+        // Arrange
+        List<Guid> expectedIds =
+        [
             Guid.Parse("d0000000-0000-0000-0000-000000000000"),
             Guid.Parse("d0000000-0000-0000-0000-000000000001"),
             Guid.Parse("d0000000-0000-0000-0000-000000000002"),
@@ -28,9 +29,11 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
             Guid.Parse("d0000000-0000-0000-0000-000000000008"),
         ];
 
-        var resultIds = analyticsRepository.GetDoctorsWithExperienceOver10Async();
+        // Act
+        var resultIds = await _service.GetDoctorsWithExperienceOver10Async();
 
-        Assert.Equal(expectedIds, (IEnumerable<Guid>?)resultIds);
+        // Assert
+        Assert.Equal(expectedIds, resultIds);
     }
 
     /// <summary>
@@ -39,18 +42,15 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
     [Theory]
     [InlineData("d0000000-0000-0000-0000-000000000000", 1)]
     [InlineData("d0000000-0000-0000-0000-000000000001", 2)]
-    public void GetPatients_ByDoctor_ReturnsCorrectCount(string doctorGuid, int expectedCount)
+    public async Task GetPatients_ByDoctor_ReturnsCorrectCount(string doctorGuid, int expectedCount)
     {
+        // Arrange
         var doctorId = Guid.Parse(doctorGuid);
 
-        var patients = _fixture.Appointments
-            .Where(a => a.Doctor.Id == doctorId)
-            .Select(a => a.Patient)
-            .OrderBy(p => p.Surname)
-            .ThenBy(p => p.Name)
-            .ThenBy(p => p.Patronymic)
-            .ToList();
+        // Act
+        var patients = await _service.GetPatientsByDoctorAsync(doctorId);
 
+        // Assert
         Assert.Equal(expectedCount, patients.Count);
     }
 
@@ -58,23 +58,20 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
     /// Tests counting repeated appointments per patient in the last month.
     /// </summary>
     [Fact]
-    public void GetRepeatedAppointments_LastMonth_ReturnsCorrectCounts()
+    public async Task GetRepeatedAppointments_LastMonth_ReturnsCorrectCounts()
     {
+        // Arrange
         var today = new DateTime(2025, 9, 24);
-        var monthAgo = today.AddMonths(-1);
 
-        var expected = new[]
+        var expected = new List<(Guid PatientId, int Count)>
         {
-            new { PatientId = Guid.Parse("c0000000-0000-0000-0000-000000000005"), Count = 1 }
+            (Guid.Parse("c0000000-0000-0000-0000-000000000005"), 1)
         };
 
-        var result = _fixture.Appointments
-            .Where(a => a.IsRepeated && a.AppointmentTime >= monthAgo && a.AppointmentTime <= today)
-            .GroupBy(a => a.Patient.Id)
-            .Select(g => new { PatientId = g.Key, Count = g.Count() })
-            .OrderBy(x => x.PatientId)
-            .ToArray();
+        // Act
+        var result = await _service.GetRepeatedAppointmentsLastMonthAsync(today);
 
+        // Assert
         Assert.Equal(expected, result);
     }
 
@@ -82,29 +79,21 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
     /// Tests retrieving patients over 30 years old with appointments to multiple doctors.
     /// </summary>
     [Fact]
-    public void GetPatients_Over30WithMultipleDoctors_ReturnsCorrectPatients()
+    public async Task GetPatients_Over30WithMultipleDoctors_ReturnsCorrectPatients()
     {
+        // Arrange
         var today = new DateOnly(2025, 9, 24);
-        var ageLimit = today.AddYears(-30);
 
-        List<Guid> expectedIds = [
+        List<Guid> expectedIds =
+        [
             Guid.Parse("c0000000-0000-0000-0000-000000000000"),
         ];
 
-        var resultIds = _fixture.Appointments
-            .Where(a => a.Patient.BirthDate <= ageLimit)
-            .GroupBy(a => a.Patient.Id)
-            .Where(g => g.Select(a => a.Doctor.Id).Distinct().Count() > 1)
-            .Select(g => g.Key)
-            .Join(
-                _fixture.Patients,
-                patientId => patientId,
-                patient => patient.Id,
-                (id, patient) => new { patient.Id, patient.BirthDate })
-            .OrderBy(p => p.BirthDate)
-            .Select(p => p.Id)
-            .ToList();
+        // Act
+        var resultPatients = await _service.GetPatientsOver30WithMultipleDoctorsAsync(today);
+        var resultIds = resultPatients.ToList();
 
+        // Assert
         Assert.Equal(expectedIds, resultIds);
     }
 
@@ -112,23 +101,22 @@ public class HospitalDomainTests(TestDataFixture fixture) : IClassFixture<TestDa
     /// Tests retrieving appointments in the current month for a specific cabinet.
     /// </summary>
     [Fact]
-    public void GetAppointments_CurrentMonthByCabinet_ReturnsCorrectAppointments()
+    public async Task GetAppointments_CurrentMonthByCabinet_ReturnsCorrectAppointments()
     {
+        // Arrange
         var today = new DateTime(2025, 9, 24);
         var cabinetNumber = "105";
 
-        List<Guid> expectedIds = [
+        List<Guid> expectedIds =
+        [
             Guid.Parse("a0000000-0000-0000-0000-000000000005"),
         ];
 
-        var resultIds = _fixture.Appointments
-            .Where(a => a.OfficeNumber == cabinetNumber
-                        && a.AppointmentTime.Year == today.Year
-                        && a.AppointmentTime.Month == today.Month)
-            .OrderBy(a => a.AppointmentTime)
-            .Select(a => a.Id)
-            .ToList();
+        // Act
+        var appointments = await _service.GetAppointmentsCurrentMonthByCabinetAsync(cabinetNumber, today);
+        var resultIds = appointments.Select(a => a.Id).ToList();
 
+        // Assert
         Assert.Equal(expectedIds, resultIds);
     }
 }
