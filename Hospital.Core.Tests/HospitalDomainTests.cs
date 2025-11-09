@@ -1,6 +1,5 @@
 using Hospital.Core.Tests.Fixtures;
 using Hospital.WebApplication.Services;
-using Hospital.Core.Domain.Models;
 
 namespace Hospital.Core.Tests;
 

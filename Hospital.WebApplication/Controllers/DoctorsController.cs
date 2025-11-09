@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WebApplication.Controllers;
 
+/// <summary>Controller for managing doctors.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class DoctorController(IDoctorService service, ILogger<DoctorController> logger) : ControllerBase
 {
-
+    /// <summary>Returns all doctors.</summary>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -20,7 +21,7 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
         return Ok(doctors);
     }
 
-
+    /// <summary>Returns a doctor by Id.</summary>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,6 +34,7 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
         return Ok(doctor);
     }
 
+    /// <summary>Creates a new doctor.</summary>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -43,6 +45,7 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
+    /// <summary>Updates a doctor by Id.</summary>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,6 +58,7 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
         return Ok(updated);
     }
 
+    /// <summary>Deletes a doctor by Id.</summary>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.WebApplication.Controllers;
 
+/// <summary>Controller for managing specializations.</summary>
 [Route("api/[controller]")]
 [ApiController]
 public class SpecializationController(ISpecializationService service, ILogger<SpecializationController> logger) : ControllerBase
 {
+    /// <summary>Returns all specializations.</summary>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -15,10 +17,10 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     {
         logger.LogInformation("Called GetAll in SpecializationController");
         var specializations = await service.GetAllSpecializationsAsync();
-        //Specialization -> Dto 
         return Ok(specializations);
     }
 
+    /// <summary>Returns a specialization by Id.</summary>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -31,10 +33,10 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
         return Ok(specialization);
     }
 
+    /// <summary>Creates a new specialization.</summary>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    // ТУТ ПРИНИМАТЬ DTO БЕЗ АЙДИШШНИКА БЛИН
     public async Task<ActionResult> Create([FromBody] SpecializationDto specialization)
     {
         logger.LogInformation("Called Create in SpecializationController");
@@ -42,6 +44,7 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
+    /// <summary>Updates a specialization by Id.</summary>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,6 +57,7 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
         return Ok(updated);
     }
 
+    /// <summary>Deletes a specialization by Id.</summary>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

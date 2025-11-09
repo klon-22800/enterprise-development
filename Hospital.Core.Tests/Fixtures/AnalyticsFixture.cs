@@ -5,16 +5,16 @@ using Moq;
 
 namespace Hospital.Core.Tests.Fixtures;
 
-
+/// <summary>Fixture for testing AnalyticsService.</summary>
 public class AnalyticsFixture
 {
-
+    /// <summary>The analytics service under test.</summary>
     public AnalyticsService Service { get; }
 
-
+    /// <summary>Test data used in the fixture.</summary>
     public TestDataFixture Data { get; }
 
-
+    /// <summary>Initializes the fixture with mocked repositories and test data.</summary>
     public AnalyticsFixture()
     {
         Data = new TestDataFixture();
@@ -41,7 +41,6 @@ public class AnalyticsFixture
             .ReturnsAsync(Data.Appointments.ToList());
 
         Service = new AnalyticsService(
-            specializationRepoMock.Object,
             doctorRepoMock.Object,
             patientRepoMock.Object,
             appointmentRepoMock.Object

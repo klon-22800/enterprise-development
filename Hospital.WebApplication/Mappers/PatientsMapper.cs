@@ -2,8 +2,12 @@
 
 namespace Hospital.WebApplication.Mappers;
 
+/// <summary>
+/// Provides mapping methods for Patients.
+/// </summary>
 public static class PatientsMapper
 {
+    /// <summary>Converts an PatientDto to an Patient domain model.</summary>
     public static Patient ToDomain(this PatientDto patientDto) => new()
     {
         PassportNumber = patientDto.PassportNumber,

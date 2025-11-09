@@ -4,11 +4,7 @@ using Hospital.Core.Domain.Repository;
 
 namespace Hospital.WebApplication.Services;
 
-/// <summary>
-/// Provides analytical queries for doctors, patients, and appointments.
-/// </summary>
 public class AnalyticsService(
-    IRepository<Specialization> specializationRepository,
     IRepository<Doctor> doctorRepository,
     IRepository<Patient> patientRepository,
     IRepository<Appointment> appointmentRepository) : IAnalyticsService
@@ -16,6 +12,8 @@ public class AnalyticsService(
     /// <summary>
     /// Returns doctors with 10 or more years of experience.
     /// </summary>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns>List of doctor IDs with 10 or more years of experience.</returns>
     public async Task<List<Guid>> GetDoctorsWithExperienceOver10Async(CancellationToken cancellationToken = default)
     {
         var doctors = await doctorRepository.GetAllAsync();
@@ -32,14 +30,17 @@ public class AnalyticsService(
     /// <summary>
     /// Returns patients of a specific doctor, ordered by name.
     /// </summary>
+    /// <param name="doctorId">The ID of the doctor.</param>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns>List of patients assigned to the specified doctor, ordered by surname, name, and patronymic.</returns>
     public async Task<List<Patient>> GetPatientsByDoctorAsync(Guid doctorId, CancellationToken cancellationToken = default)
     {
         var appointments = await appointmentRepository.GetAllAsync();
         var patients = await patientRepository.GetAllAsync();
 
         var result = appointments
-            .Where(a => a.DoctorId == doctorId) 
-            .Select(a => patients.First(p => p.Id == a.PatientId)) 
+            .Where(a => a.DoctorId == doctorId)
+            .Select(a => patients.First(p => p.Id == a.PatientId))
             .OrderBy(p => p.Surname)
             .ThenBy(p => p.Name)
             .ThenBy(p => p.Patronymic)
@@ -51,6 +52,9 @@ public class AnalyticsService(
     /// <summary>
     /// Returns repeated appointments per patient in the last month.
     /// </summary>
+    /// <param name="today">The reference date for calculating the last month.</param>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns>List of tuples with patient ID and the count of repeated appointments in the last month.</returns>
     public async Task<List<(Guid PatientId, int Count)>> GetRepeatedAppointmentsLastMonthAsync(DateTime today, CancellationToken cancellationToken = default)
     {
         var appointments = await appointmentRepository.GetAllAsync();
@@ -59,7 +63,7 @@ public class AnalyticsService(
 
         var result = appointments
             .Where(a => a.IsRepeated && a.AppointmentTime >= monthAgo && a.AppointmentTime <= today)
-            .GroupBy(a => a.PatientId) 
+            .GroupBy(a => a.PatientId)
             .Select(g => (PatientId: g.Key, Count: g.Count()))
             .OrderBy(x => x.PatientId)
             .ToList();
@@ -70,6 +74,9 @@ public class AnalyticsService(
     /// <summary>
     /// Returns patients over 30 years old who have appointments with multiple doctors.
     /// </summary>
+    /// <param name="today">The reference date for calculating age.</param>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns>List of patient IDs over 30 years old with appointments with multiple doctors.</returns>
     public async Task<List<Guid>> GetPatientsOver30WithMultipleDoctorsAsync(DateOnly today, CancellationToken cancellationToken = default)
     {
         var appointments = await appointmentRepository.GetAllAsync();
@@ -95,12 +102,16 @@ public class AnalyticsService(
     /// <summary>
     /// Returns appointments in the current month for a specific cabinet.
     /// </summary>
-    public async Task<List<Appointment>> GetAppointmentsCurrentMonthByCabinetAsync(string cabinetNumber, DateTime today, CancellationToken cancellationToken = default)
+    /// <param name="officeNumber">The office or cabinet number.</param>
+    /// <param name="today">The reference date for the current month.</param>
+    /// <param name="cancellationToken">Optional cancellation token.</param>
+    /// <returns>List of appointments in the specified cabinet for the current month.</returns>
+    public async Task<List<Appointment>> GetAppointmentsCurrentMonthByCabinetAsync(string officeNumber, DateTime today, CancellationToken cancellationToken = default)
     {
         var appointments = await appointmentRepository.GetAllAsync();
 
         var result = appointments
-            .Where(a => a.OfficeNumber == cabinetNumber
+            .Where(a => a.OfficeNumber == officeNumber
                         && a.AppointmentTime.Year == today.Year
                         && a.AppointmentTime.Month == today.Month)
             .OrderBy(a => a.AppointmentTime)

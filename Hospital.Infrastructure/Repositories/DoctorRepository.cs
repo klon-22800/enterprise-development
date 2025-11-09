@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
 
+/// <summary>Repository implementation for managing doctors.</summary>
 public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
 {
+    /// <inheritdoc/>
     public async Task<Guid> CreateAsync(Doctor entity)
     {
         context.Doctors.Add(entity);
@@ -13,6 +15,7 @@ public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
         return entity.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<List<Doctor>> GetAllAsync()
     {
         return await context.Doctors
@@ -21,30 +24,29 @@ public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
             .ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<Doctor?> GetByIdAsync(Guid id)
     {
         return await context.Doctors
+            .AsNoTracking()
             .Include(d => d.Specialization)
             .FirstOrDefaultAsync(d => d.Id == id);
     }
 
+    /// <inheritdoc/>
     public async Task<Doctor?> UpdateAsync(Guid id, Doctor entity)
     {
-        var doctor = await context.Doctors.FindAsync(id);
-        if (doctor == null) return null;
+        var existing = await context.Doctors.FindAsync(id);
+        if (existing is null) return null;
 
-        doctor.PassportNumber = entity.PassportNumber;
-        doctor.Name = entity.Name;
-        doctor.Surname = entity.Surname;
-        doctor.Patronymic = entity.Patronymic;
-        doctor.BirthDate = entity.BirthDate;
-        doctor.Specialization = entity.Specialization;
-        doctor.Experience = entity.Experience;
+        context.Entry(existing).CurrentValues.SetValues(entity);
 
         await context.SaveChangesAsync();
-        return doctor;
+
+        return existing;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
         var doctor = await context.Doctors.FindAsync(id);

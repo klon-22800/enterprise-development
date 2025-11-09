@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
 
+/// <summary>Repository implementation for managing patients.</summary>
 public class PatientRepository(HospitalDbContext context) : IRepository<Patient>
 {
+    /// <inheritdoc/>
     public async Task<Guid> CreateAsync(Patient entity)
     {
         context.Patients.Add(entity);
@@ -13,36 +15,33 @@ public class PatientRepository(HospitalDbContext context) : IRepository<Patient>
         return entity.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<List<Patient>> GetAllAsync()
     {
         return await context.Patients.AsNoTracking().ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<Patient?> GetByIdAsync(Guid id)
     {
-        return await context.Patients.FirstOrDefaultAsync(p => p.Id == id);
+        return await context.Patients
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    /// <inheritdoc/>
     public async Task<Patient?> UpdateAsync(Guid id, Patient entity)
     {
-        var patient = await context.Patients.FindAsync(id);
-        if (patient == null) return null;
+        var existing = await context.Patients.FindAsync(id);
+        if (existing is null) return null;
 
-        patient.PassportNumber = entity.PassportNumber;
-        patient.Name = entity.Name;
-        patient.Surname = entity.Surname;
-        patient.Patronymic = entity.Patronymic;
-        patient.BirthDate = entity.BirthDate;
-        patient.Address = entity.Address;
-        patient.Gender = entity.Gender;
-        patient.BloodType = entity.BloodType;
-        patient.RhesusFactor = entity.RhesusFactor;
-        patient.PhoneNumber = entity.PhoneNumber;
+        context.Entry(existing).CurrentValues.SetValues(entity);
 
         await context.SaveChangesAsync();
-        return patient;
+        return existing;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
         var patient = await context.Patients.FindAsync(id);

@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
 
+/// <summary>Repository implementation for managing specializations.</summary>
 public class SpecializationRepository(HospitalDbContext context) : IRepository<Specialization>
 {
+    /// <inheritdoc/>
     public async Task<Guid> CreateAsync(Specialization entity)
     {
         context.Specializations.Add(entity);
@@ -13,6 +15,7 @@ public class SpecializationRepository(HospitalDbContext context) : IRepository<S
         return entity.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<List<Specialization>> GetAllAsync()
     {
         return await context.Specializations
@@ -20,6 +23,7 @@ public class SpecializationRepository(HospitalDbContext context) : IRepository<S
             .ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<Specialization?> GetByIdAsync(Guid id)
     {
         return await context.Specializations
@@ -27,6 +31,7 @@ public class SpecializationRepository(HospitalDbContext context) : IRepository<S
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
+    /// <inheritdoc/>
     public async Task<Specialization?> UpdateAsync(Guid id, Specialization entity)
     {
         var specialization = await context.Specializations.FindAsync(id);
@@ -38,6 +43,7 @@ public class SpecializationRepository(HospitalDbContext context) : IRepository<S
         return specialization;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
         var specialization = await context.Specializations.FindAsync(id);
