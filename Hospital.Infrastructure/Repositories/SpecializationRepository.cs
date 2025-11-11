@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
 
-/// <summary>Repository implementation for managing specializations.</summary>
+/// <summary>
+/// Repository implementation for managing specializations.
+/// </summary>
 public class SpecializationRepository(HospitalDbContext context) : IRepository<Specialization>
 {
     /// <inheritdoc/>

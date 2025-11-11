@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
 
-/// <summary>Repository implementation for managing doctors.</summary>
+/// <summary>
+/// Repository implementation for managing doctors.
+/// </summary>
 public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
 {
     /// <inheritdoc/>

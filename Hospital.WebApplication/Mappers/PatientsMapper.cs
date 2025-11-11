@@ -8,7 +8,9 @@ namespace Hospital.WebApplication.Mappers;
 /// </summary>
 public static class PatientsMapper
 {
-    /// <summary>Converts an PatientDto to an Patient domain model.</summary>
+    /// <summary>
+    /// Converts an PatientDto to an Patient domain model.
+    /// </summary>
     public static Patient ToDomain(this PatientDto patientDto) => new()
     {
         PassportNumber = patientDto.PassportNumber,
@@ -22,6 +24,10 @@ public static class PatientsMapper
         RhesusFactor = patientDto.RhesusFactor,
         PhoneNumber = patientDto.PhoneNumber
     };
+
+    /// <summary>
+    /// Converts an Patient to an PatientResponseDto.
+    /// </summary>
     public static PatientResponseDto ToResponse(this Patient patient) => new(
         patient.Id,
         patient.PassportNumber,

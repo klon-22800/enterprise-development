@@ -9,7 +9,9 @@ namespace Hospital.WebApplication.Mappers;
 /// </summary>
 public static class DoctorsMapper
 {
-    /// <summary>Converts an DoctortDto to an Doctor domain model.</summary>
+    /// <summary>
+    /// Converts an DoctortDto to an Doctor domain model.
+    /// </summary>
     public static Doctor ToDomain(this DoctorDto doctorDto) => new()
     {
         PassportNumber = doctorDto.PassportNumber,
@@ -21,6 +23,9 @@ public static class DoctorsMapper
         Experience = doctorDto.Experience
     };
 
+    /// <summary>
+    /// Converts an Doctor to an DoctorResponseDto.
+    /// </summary>
     public static DoctorResponseDto ToResponse(this Doctor doctor) => new(
         doctor.Id,
         doctor.PassportNumber,
