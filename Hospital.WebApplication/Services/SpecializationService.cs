@@ -1,6 +1,7 @@
 ﻿using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebApplication.Services;
 
@@ -14,8 +15,17 @@ public class SpecializationService(IRepository<Specialization> repository) : ISp
     /// </summary>
     /// <param name="name">The name of the specialization.</param>
     /// <returns>The ID of the created specialization.</returns>
-    public async Task<Guid> CreateSpecializationAsync(string name) =>
-        await repository.CreateAsync(new Specialization { Name = name });
+    public async Task<Guid> CreateSpecializationAsync(string name)
+    {
+        try
+        {
+            return await repository.CreateAsync(new Specialization { Name = name });
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Invalid data.");
+        }
+    }
 
     /// <summary>
     /// Returns all specializations.
@@ -46,6 +56,15 @@ public class SpecializationService(IRepository<Specialization> repository) : ISp
     /// </summary>
     /// <param name="id">The ID of the specialization to delete.</param>
     /// <returns><c>true</c> if the specialization was deleted; otherwise, <c>false</c>.</returns>
-    public async Task<bool> DeleteSpecializationAsync(Guid id) =>
-        await repository.DeleteAsync(id);
+    public async Task<bool> DeleteSpecializationAsync(Guid id)
+    {
+        try
+        {
+            return await repository.DeleteAsync(id);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Cannot delete specialization because there are related doctor");
+        }
+    }
 }

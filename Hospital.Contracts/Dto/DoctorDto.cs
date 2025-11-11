@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿namespace Hospital.Contracts.Dto;
+
+/// <summary>
 /// Data transfer object for a doctor.
 /// </summary>
 /// <param name="PassportNumber">The passport number of the doctor.</param>
@@ -17,3 +19,14 @@ public record DoctorDto(
     Guid SpecializationId,
     int Experience
     );
+
+public record DoctorResponseDto(
+    Guid Id,
+    string PassportNumber,
+    string Name,
+    string Surname,
+    string? Patronymic,
+    DateOnly BirthDate,
+    Guid SpecializationId,
+    int Experience
+);

@@ -1,6 +1,7 @@
 ﻿using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebApplication.Services;
 
@@ -14,8 +15,17 @@ public class PatientService(IRepository<Patient> repository) : IPatientService
     /// </summary>
     /// <param name="patient">The patient to create.</param>
     /// <returns>The ID of the created patient.</returns>
-    public async Task<Guid> CreatePatientAsync(Patient patient) =>
-        await repository.CreateAsync(patient);
+    public async Task<Guid> CreatePatientAsync(Patient patient)
+    {
+        try
+        {
+            return await repository.CreateAsync(patient);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Invalid data.");
+        }
+    }
 
     /// <summary>
     /// Returns all patients.
@@ -38,14 +48,32 @@ public class PatientService(IRepository<Patient> repository) : IPatientService
     /// <param name="id">The ID of the patient to update.</param>
     /// <param name="patient">The updated patient data.</param>
     /// <returns>The updated patient, or <c>null</c> if not found.</returns>
-    public async Task<Patient?> UpdatePatientAsync(Guid id, Patient patient) =>
-        await repository.UpdateAsync(id, patient);
+    public async Task<Patient?> UpdatePatientAsync(Guid id, Patient patient)
+    {
+        try
+        {
+            return await repository.UpdateAsync(id, patient);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Invalid data.");
+        }
+    }
 
     /// <summary>
     /// Deletes a patient by ID.
     /// </summary>
     /// <param name="id">The ID of the patient to delete.</param>
     /// <returns><c>true</c> if the patient was deleted; otherwise, <c>false</c>.</returns>
-    public async Task<bool> DeletePatientAsync(Guid id) =>
-        await repository.DeleteAsync(id);
+    public async Task<bool> DeletePatientAsync(Guid id)
+    {
+        try
+        {
+            return await repository.DeleteAsync(id);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Cannot delete patient because there are related appointments.");
+        }
+    }
 }

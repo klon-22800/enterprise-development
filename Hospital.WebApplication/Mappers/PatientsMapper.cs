@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Domain.Models;
+using Hospital.Contracts.Dto;
 
 namespace Hospital.WebApplication.Mappers;
 
@@ -21,4 +22,17 @@ public static class PatientsMapper
         RhesusFactor = patientDto.RhesusFactor,
         PhoneNumber = patientDto.PhoneNumber
     };
+    public static PatientResponseDto ToResponse(this Patient patient) => new(
+        patient.Id,
+        patient.PassportNumber,
+        patient.Name,
+        patient.Surname,
+        patient.Patronymic,
+        patient.BirthDate,
+        patient.Address,
+        patient.Gender,
+        patient.BloodType,
+        patient.RhesusFactor,
+        patient.PhoneNumber
+    );
 }

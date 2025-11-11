@@ -1,6 +1,7 @@
 ﻿using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.WebApplication.Services;
 
@@ -14,8 +15,17 @@ public class AppointmentService(IRepository<Appointment> repository) : IAppointm
     /// </summary>
     /// <param name="appointment">The appointment to create.</param>
     /// <returns>The ID of the created appointment.</returns>
-    public async Task<Guid> CreateAppointmentAsync(Appointment appointment) =>
-        await repository.CreateAsync(appointment);
+    public async Task<Guid> CreateAppointmentAsync(Appointment appointment)
+    {
+        try
+        {
+            return await repository.CreateAsync(appointment);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Doctor or Patient does not exist");
+        }
+    }
 
     /// <summary>
     /// Returns all appointments.
@@ -38,8 +48,17 @@ public class AppointmentService(IRepository<Appointment> repository) : IAppointm
     /// <param name="id">The ID of the appointment to update.</param>
     /// <param name="appointment">The updated appointment data.</param>
     /// <returns>The updated appointment, or <c>null</c> if not found.</returns>
-    public async Task<Appointment?> UpdateAppointmentAsync(Guid id, Appointment appointment) =>
-        await repository.UpdateAsync(id, appointment);
+    public async Task<Appointment?> UpdateAppointmentAsync(Guid id, Appointment appointment)
+    {
+        try
+        {
+            return await repository.UpdateAsync(id, appointment);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Doctor or Patient does not exist");
+        }
+    }
 
     /// <summary>
     /// Deletes an appointment by ID.

@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Domain.Models;
+using Hospital.Contracts.Dto;
 
 namespace Hospital.WebApplication.Mappers;
 
@@ -19,4 +20,15 @@ public static class DoctorsMapper
         SpecializationId = doctorDto.SpecializationId,
         Experience = doctorDto.Experience
     };
+
+    public static DoctorResponseDto ToResponse(this Doctor doctor) => new(
+        doctor.Id,
+        doctor.PassportNumber,
+        doctor.Name,
+        doctor.Surname,
+        doctor.Patronymic,
+        doctor.BirthDate,
+        doctor.SpecializationId,
+        doctor.Experience
+    );
 }

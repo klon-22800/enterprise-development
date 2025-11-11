@@ -1,4 +1,5 @@
 ﻿using Hospital.Core.Domain.Models;
+using Hospital.Contracts.Dto;
 
 namespace Hospital.WebApplication.Mappers;
 
@@ -16,4 +17,13 @@ public static class AppointmentsMapper
         DoctorId = appointmentDto.DoctorId,
         PatientId = appointmentDto.PatientId
     };
+    public static AppointmentResponseDto ToResponse(this Appointment appointment) => new(
+        appointment.Id,
+        appointment.AppointmentTime,
+        appointment.OfficeNumber,
+        appointment.IsRepeated,
+        appointment.PatientId,
+        appointment.DoctorId
+    );
+
 }

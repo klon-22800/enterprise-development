@@ -1,5 +1,7 @@
 ﻿using Hospital.Core.Domain.Models.Enums;
 
+namespace Hospital.Contracts.Dto;
+
 /// <summary>
 /// Data transfer object for a patient.
 /// </summary>
@@ -23,5 +25,19 @@ public record PatientDto(
     Gender Gender,
     BloodType? BloodType, 
     RhesusFactor? RhesusFactor, 
+    string PhoneNumber
+    );
+
+public record PatientResponseDto(
+    Guid Id,
+    string PassportNumber,
+    string Name,
+    string Surname,
+    string? Patronymic,
+    DateOnly BirthDate,
+    string Address,
+    Gender Gender,
+    BloodType? BloodType,
+    RhesusFactor? RhesusFactor,
     string PhoneNumber
     );
