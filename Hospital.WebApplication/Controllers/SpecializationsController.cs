@@ -1,6 +1,7 @@
 ﻿using Hospital.Core.Domain.Service;
 using Microsoft.AspNetCore.Mvc;
 using Hospital.Contracts.Dto;
+using Hospital.WebApplication.Mappers;
 
 namespace Hospital.WebApplication.Controllers;
 
@@ -17,13 +18,13 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<SpecializationDto>>> GetAll()
+    public async Task<ActionResult<List<SpecializationResponseDto>>> GetAll()
     {
         logger.LogInformation("Called GetAll in SpecializationController");
         try
         {
             var specializations = await service.GetAllSpecializationsAsync();
-            var response = specializations.Select(s => new SpecializationDto(s.Name)).ToList();
+            var response = specializations.Select(s => s.ToResponse()).ToList();
             return Ok(response);
         }
         catch (Exception ex)
@@ -40,14 +41,14 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<SpecializationDto>> GetById(Guid id)
+    public async Task<ActionResult<SpecializationResponseDto>> GetById(Guid id)
     {
         logger.LogInformation("Called GetById in SpecializationController");
         try
         {
             var specialization = await service.GetSpecializationAsync(id);
             if (specialization is null) return NotFound();
-            return Ok(new SpecializationDto(specialization.Name));
+            return Ok(specialization.ToResponse());
         }
         catch (Exception ex)
         {
@@ -95,7 +96,7 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<SpecializationDto>> Update(Guid id, [FromBody] SpecializationDto specializationDto)
+    public async Task<ActionResult<SpecializationResponseDto>> Update(Guid id, [FromBody] SpecializationDto specializationDto)
     {
         logger.LogInformation("Called Update in SpecializationController");
 
@@ -104,10 +105,13 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
 
         try
         {
-            var updated = await service.UpdateSpecializationAsync(id, new Hospital.Core.Domain.Models.Specialization { Name = specializationDto.Name });
+            var specializationToUpdate = specializationDto.ToDomain();
+            specializationToUpdate.Id = id;
+
+            var updated = await service.UpdateSpecializationAsync(id, specializationToUpdate);
             if (updated is null) return NotFound();
 
-            return Ok(new SpecializationDto(updated.Name));
+            return Ok(updated.ToResponse());
         }
         catch (InvalidOperationException ex)
         {

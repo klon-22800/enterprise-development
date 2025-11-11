@@ -106,7 +106,9 @@ public class PatientController(IPatientService service, ILogger<PatientControlle
 
         try
         {
-            var updated = await service.UpdatePatientAsync(id, patientDto.ToDomain());
+            var patientToUpdate = patientDto.ToDomain();
+            patientToUpdate.Id = id; 
+            var updated = await service.UpdatePatientAsync(id, patientToUpdate);
             if (updated is null) return NotFound();
 
             return Ok(updated.ToResponse());

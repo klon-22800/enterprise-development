@@ -79,12 +79,16 @@ public class AppointmentController(IAppointmentService service, ILogger<Appointm
     public async Task<ActionResult<AppointmentResponseDto>> Update(Guid id, [FromBody] AppointmentDto appointmentDto)
     {
         logger.LogInformation("Called Update in AppointmentController");
+
         if (appointmentDto is null)
             return BadRequest("Appointment data is required.");
 
         try
         {
-            var updated = await service.UpdateAppointmentAsync(id, appointmentDto.ToDomain());
+            var appointmentToUpdate = appointmentDto.ToDomain();
+            appointmentToUpdate.Id = id;
+
+            var updated = await service.UpdateAppointmentAsync(id, appointmentToUpdate);
             if (updated is null)
                 return NotFound();
 

@@ -6,7 +6,7 @@ namespace Hospital.WebApplication.Mappers;
 /// <summary>
 /// Provides mapping methods for Specializations.
 /// </summary>
-public static class SpecializationMapepr
+public static class SpecializationMapper
 {
     /// <summary>
     /// Converts an SpecializationDto to an Specialization domain model.
