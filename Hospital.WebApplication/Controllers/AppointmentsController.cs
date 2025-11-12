@@ -86,7 +86,6 @@ public class AppointmentController(IAppointmentService service, ILogger<Appointm
         try
         {
             var appointmentToUpdate = appointmentDto.ToDomain();
-            appointmentToUpdate.Id = id;
 
             var updated = await service.UpdateAppointmentAsync(id, appointmentToUpdate);
             if (updated is null)

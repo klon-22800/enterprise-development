@@ -52,6 +52,7 @@ public class DoctorService(IRepository<Doctor> repository) : IDoctorService
     {
         try
         {
+            doctor.Id = id;
             return await repository.UpdateAsync(id, doctor);
         }
         catch (DbUpdateException ex)

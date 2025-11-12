@@ -48,8 +48,19 @@ public class SpecializationService(IRepository<Specialization> repository) : ISp
     /// <param name="id">The ID of the specialization to update.</param>
     /// <param name="entity">The updated specialization data.</param>
     /// <returns>The updated specialization, or <c>null</c> if not found.</returns>
-    public async Task<Specialization?> UpdateSpecializationAsync(Guid id, Specialization entity) =>
-        await repository.UpdateAsync(id, entity);
+    public async Task<Specialization?> UpdateSpecializationAsync(Guid id, Specialization entity)
+    {
+        try
+        {
+            entity.Id = id;
+            return await repository.UpdateAsync(id, entity);
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Invalid data.");
+        }
+    }
+
 
     /// <summary>
     /// Deletes a specialization by ID.

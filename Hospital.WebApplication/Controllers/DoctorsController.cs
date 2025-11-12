@@ -107,7 +107,6 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
         try
         {
             var doctorToUpdate = doctorDto.ToDomain();
-            doctorToUpdate.Id = id; 
 
             var updated = await service.UpdateDoctorAsync(id, doctorToUpdate);
             if (updated is null)

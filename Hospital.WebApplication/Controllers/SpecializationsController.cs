@@ -106,7 +106,6 @@ public class SpecializationController(ISpecializationService service, ILogger<Sp
         try
         {
             var specializationToUpdate = specializationDto.ToDomain();
-            specializationToUpdate.Id = id;
 
             var updated = await service.UpdateSpecializationAsync(id, specializationToUpdate);
             if (updated is null) return NotFound();

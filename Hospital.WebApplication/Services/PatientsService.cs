@@ -52,6 +52,7 @@ public class PatientService(IRepository<Patient> repository) : IPatientService
     {
         try
         {
+            patient.Id = id;
             return await repository.UpdateAsync(id, patient);
         }
         catch (DbUpdateException)

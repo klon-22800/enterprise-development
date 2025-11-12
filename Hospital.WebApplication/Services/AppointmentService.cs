@@ -52,6 +52,7 @@ public class AppointmentService(IRepository<Appointment> repository) : IAppointm
     {
         try
         {
+            appointment.Id = id;
             return await repository.UpdateAsync(id, appointment);
         }
         catch (DbUpdateException)
