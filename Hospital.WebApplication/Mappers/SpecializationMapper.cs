@@ -1,5 +1,5 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Contracts.Dto;
+using Hospital.Contracts.Dto.Specialization;
 
 namespace Hospital.WebApplication.Mappers;
 

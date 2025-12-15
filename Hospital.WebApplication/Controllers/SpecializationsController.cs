@@ -1,6 +1,6 @@
 ﻿using Hospital.Core.Domain.Service;
 using Microsoft.AspNetCore.Mvc;
-using Hospital.Contracts.Dto;
+using Hospital.Contracts.Dto.Specialization;
 using Hospital.WebApplication.Mappers;
 
 namespace Hospital.WebApplication.Controllers;

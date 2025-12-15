@@ -1,6 +1,6 @@
 ﻿using Hospital.Core.Domain.Models.Enums;
 
-namespace Hospital.Contracts.Dto;
+namespace Hospital.Contracts.Dto.Patient;
 
 /// <summary>
 /// Data transfer object for a patient.
@@ -15,18 +15,7 @@ namespace Hospital.Contracts.Dto;
 /// <param name="BloodType">The blood type of the patient, if known.</param>
 /// <param name="RhesusFactor">The Rhesus factor of the patient, if known.</param>
 /// <param name="PhoneNumber">The contact phone number of the patient.</param>
-public record PatientDto(
-    string PassportNumber, 
-    string Name,
-    string Surname, 
-    string? Patronymic,
-    DateOnly BirthDate,
-    string Address,
-    Gender Gender,
-    BloodType? BloodType, 
-    RhesusFactor? RhesusFactor, 
-    string PhoneNumber
-    );
+
 
 public record PatientResponseDto(
     Guid Id,
