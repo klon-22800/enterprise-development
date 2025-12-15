@@ -1,5 +1,4 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,7 @@ namespace Hospital.WebApplication.Services;
 /// <summary>
 /// Service for managing appointments.
 /// </summary>
-public class AppointmentService(IRepository<Appointment> repository) : IAppointmentService
+public class AppointmentService(IAppointmentRepository repository) : IAppointmentService
 {
     /// <summary>
     /// Creates a new appointment.
@@ -67,4 +66,11 @@ public class AppointmentService(IRepository<Appointment> repository) : IAppointm
     /// <returns><c>true</c> if the appointment was deleted; otherwise, <c>false</c>.</returns>
     public async Task<bool> DeleteAppointmentAsync(Guid id) =>
         await repository.DeleteAsync(id);
+
+    public async Task<List<Appointment>> GetAppointmentsByDoctorAsync(Guid doctorId) => 
+        await repository.GetByDoctorIdAsync(doctorId);
+
+    public async Task<List<Appointment>> GetAppointmentsByPatientAsync(Guid patientId) => 
+        await repository.GetByPatientIdAsync(patientId);
+
 }

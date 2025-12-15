@@ -131,4 +131,51 @@ public class AppointmentController(IAppointmentService service, ILogger<Appointm
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
+
+    /// <summary>
+    /// Returns all appointments for a specific doctor.
+    /// </summary>
+    [HttpGet("doctor/{doctorId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<AppointmentResponseDto>>> GetByDoctor(Guid doctorId)
+    {
+        logger.LogInformation("Called GetByDoctor in AppointmentController");
+
+        try
+        {
+            var appointments = await service.GetAppointmentsByDoctorAsync(doctorId);
+            var response = appointments.Select(a => a.ToResponse()).ToList();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred in GetByDoctor");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
+    }
+
+    /// <summary>
+    /// Returns all appointments for a specific patient.
+    /// </summary>
+    [HttpGet("patient/{patientId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<AppointmentResponseDto>>> GetByPatient(Guid patientId)
+    {
+        logger.LogInformation("Called GetByPatient in AppointmentController");
+
+        try
+        {
+            var appointments = await service.GetAppointmentsByPatientAsync(patientId);
+            var response = appointments.Select(a => a.ToResponse()).ToList();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred in GetByPatient");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
+    }
+
 }

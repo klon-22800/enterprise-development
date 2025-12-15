@@ -1,5 +1,4 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,7 @@ namespace Hospital.WebApplication.Services;
 /// <summary>
 /// Service for managing doctors.
 /// </summary>
-public class DoctorService(IRepository<Doctor> repository) : IDoctorService
+public class DoctorService(IDoctorRepository repository) : IDoctorService
 {
     /// <summary>
     /// Creates a new doctor.
@@ -76,4 +75,8 @@ public class DoctorService(IRepository<Doctor> repository) : IDoctorService
             throw new InvalidOperationException("Cannot delete doctor because there are related appointments.");
         }
     }
+
+    public async Task<List<Doctor>> GetDoctorsBySpecializationAsync(Guid specializationId) =>
+        await repository.GetBySpecializationIdAsync(specializationId);
+
 }

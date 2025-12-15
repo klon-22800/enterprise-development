@@ -5,9 +5,9 @@ using Hospital.Core.Domain.Repository;
 namespace Hospital.WebApplication.Services;
 
 public class AnalyticsService(
-    IRepository<Doctor> doctorRepository,
+    IDoctorRepository doctorRepository,
     IRepository<Patient> patientRepository,
-    IRepository<Appointment> appointmentRepository) : IAnalyticsService
+    IAppointmentRepository appointmentRepository) : IAnalyticsService
 {
     /// <summary>
     /// Returns doctors with 10 or more years of experience.

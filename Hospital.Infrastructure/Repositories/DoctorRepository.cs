@@ -1,5 +1,4 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Core.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
@@ -7,7 +6,7 @@ namespace Hospital.Infrastructure.Repositories;
 /// <summary>
 /// Repository implementation for managing doctors.
 /// </summary>
-public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
+public class DoctorRepository(HospitalDbContext context) : IDoctorRepository
 {
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(Doctor entity)
@@ -58,4 +57,14 @@ public class DoctorRepository(HospitalDbContext context) : IRepository<Doctor>
         await context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<List<Doctor>> GetBySpecializationIdAsync(Guid specializationId)
+    {
+        return await context.Doctors
+            .AsNoTracking()
+            .Include(d => d.Specialization)
+            .Where(d => d.SpecializationId == specializationId)
+            .ToListAsync();
+    }
+
 }

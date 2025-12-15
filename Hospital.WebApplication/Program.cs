@@ -18,10 +18,10 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IRepository<Specialization>, SpecializationRepository>();
 builder.Services.AddScoped<ISpecializationService, SpecializationService>();
 
-builder.Services.AddScoped<IRepository<Doctor>, DoctorRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 
-builder.Services.AddScoped<IRepository<Appointment>, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();

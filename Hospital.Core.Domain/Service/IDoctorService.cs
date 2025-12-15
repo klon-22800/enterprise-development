@@ -41,4 +41,7 @@ public interface IDoctorService
     /// <param name="doctor">The doctor data.</param>
     /// <returns>The updated doctor, or <c>null</c> if not found.</returns>
     public Task<Doctor?> UpdateDoctorAsync(Guid guid, Doctor doctor);
+
+    public Task<List<Doctor>> GetDoctorsBySpecializationAsync(Guid specializationId);
+
 }

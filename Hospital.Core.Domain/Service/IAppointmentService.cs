@@ -40,4 +40,8 @@ public interface IAppointmentService
     /// <param name="id">The Id of the appointment to delete.</param>
     /// <returns><c>true</c> if deleted; otherwise, <c>false</c>.</returns>
     public Task<bool> DeleteAppointmentAsync(Guid id);
+
+    public Task<List<Appointment>> GetAppointmentsByDoctorAsync(Guid doctorId);
+    public Task<List<Appointment>> GetAppointmentsByPatientAsync(Guid patientId);
+
 }

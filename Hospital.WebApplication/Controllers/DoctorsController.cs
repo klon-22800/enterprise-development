@@ -151,4 +151,28 @@ public class DoctorController(IDoctorService service, ILogger<DoctorController> 
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
         }
     }
+
+    /// <summary>
+    /// Returns all doctors for a specific specialization.
+    /// </summary>
+    [HttpGet("specialization/{specializationId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<DoctorResponseDto>>> GetBySpecialization(Guid specializationId)
+    {
+        logger.LogInformation("Called GetBySpecialization in DoctorController");
+
+        try
+        {
+            var doctors = await service.GetDoctorsBySpecializationAsync(specializationId);
+            var response = doctors.Select(d => d.ToResponse()).ToList();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred in GetBySpecialization");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+        }
+    }
+
 }

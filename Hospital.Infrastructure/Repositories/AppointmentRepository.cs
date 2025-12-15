@@ -1,5 +1,4 @@
 ﻿using Hospital.Core.Domain.Models;
-using Hospital.Core.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Infrastructure.Repositories;
@@ -7,7 +6,7 @@ namespace Hospital.Infrastructure.Repositories;
 /// <summary>
 /// Repository implementation for managing appointments.
 /// </summary>
-public class AppointmentRepository(HospitalDbContext context) : IRepository<Appointment>
+public class AppointmentRepository(HospitalDbContext context) : IAppointmentRepository
 {
     /// <inheritdoc/>
     public async Task<List<Appointment>> GetAllAsync()
@@ -54,4 +53,20 @@ public class AppointmentRepository(HospitalDbContext context) : IRepository<Appo
         await context.SaveChangesAsync();
         return true;
     }
+    public async Task<List<Appointment>> GetByDoctorIdAsync(Guid doctorId)
+        => await context.Appointments
+            .AsNoTracking()
+            .Include(a => a.Doctor)
+            .Include(a => a.Patient)
+            .Where(a => a.DoctorId == doctorId)
+            .ToListAsync();
+
+    public async Task<List<Appointment>> GetByPatientIdAsync(Guid patientId)
+        => await context.Appointments
+            .AsNoTracking()
+            .Include(a => a.Doctor)
+            .Include(a => a.Patient)
+            .Where(a => a.PatientId == patientId)
+            .ToListAsync();
+
 }
