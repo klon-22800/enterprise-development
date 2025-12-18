@@ -78,7 +78,7 @@ public class GrpcClientConsumer
                         Patronymic = pat.Patronymic,
                         BirthDate = DateOnly.Parse(pat.BirthDate),
                         Address = pat.Address,
-                        Gender = (Hospital.Core.Domain.Shared.Enums.Gender)pat.Gender,
+                        Gender = pat.Gender.ToDomain(),
                         BloodType = pat.BloodType.ToDomain(),
                         RhesusFactor = pat.RhesusFactor.ToDomain(),
                         PhoneNumber = pat.PhoneNumber
