@@ -39,13 +39,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-
-
-
-
 builder.Services.AddGrpcClient<GenerationService.GenerationServiceClient>(o =>
 {
-    o.Address = new Uri("http://localhost:5002"); // адрес твоего gRPC-сервера
+    o.Address = new Uri("http://localhost:5002"); 
 });
 
 builder.Services.AddScoped<GrpcClientConsumer>();
@@ -57,7 +53,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<HospitalDbContext>();
     db.Database.Migrate();
 }
-
 
 if (app.Environment.IsDevelopment())
 {

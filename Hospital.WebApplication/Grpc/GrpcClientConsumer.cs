@@ -5,6 +5,9 @@ using Hospital.Grpc.Contracts;
 
 namespace Hospital.WebApplication.Grpc;
 
+/// <summary>
+/// Класс GrpcConsumer для принятия, обработки и сохранения данных через репозитории
+/// </summary>
 public class GrpcClientConsumer
 {
     private readonly IDoctorRepository _doctorRepo;
@@ -24,11 +27,15 @@ public class GrpcClientConsumer
         _grpcClient = grpcClient;
     }
 
+    /// <summary>
+    /// Метод для принятия и обработки данных 
+    /// </summary>
+    /// <param name="totalCount" > Общее кол-во каждой сущности </param>
+    /// <param name="batchSize" > Кол-во сущностей в одном батче </param>
     public async Task StartGenerationAsync(int totalCount, int batchSize, CancellationToken cancellationToken = default)
     {
         using var call = _grpcClient.Generate();
 
-        // Отправляем команду StartGeneration
         await call.RequestStream.WriteAsync(new GenerationRequest
         {
             Start = new StartGeneration
@@ -38,14 +45,12 @@ public class GrpcClientConsumer
             }
         });
 
-        // Обработка ответного потока
         await foreach (var response in call.ResponseStream.ReadAllAsync(cancellationToken))
         {
             if (response.PayloadCase == GenerationResponse.PayloadOneofCase.Batch)
             {
                 var batch = response.Batch;
 
-                // Сохраняем Doctors
                 foreach (var doc in batch.Doctors)
                 {
                     var doctor = new Doctor
@@ -62,7 +67,6 @@ public class GrpcClientConsumer
                     await _doctorRepo.CreateAsync(doctor);
                 }
 
-                // Сохраняем Patients
                 foreach (var pat in batch.Patients)
                 {
                     var patient = new Patient
@@ -82,7 +86,6 @@ public class GrpcClientConsumer
                     await _patientRepo.CreateAsync(patient);
                 }
 
-                // Сохраняем Appointments
                 foreach (var app in batch.Appointments)
                 {
                     var appointment = new Appointment
@@ -97,7 +100,6 @@ public class GrpcClientConsumer
                     await _appointmentRepo.CreateAsync(appointment);
                 }
 
-                // Отправляем ack
                 await call.RequestStream.WriteAsync(new GenerationRequest
                 {
                     Ack = new BatchAck { BatchNumber = batch.BatchNumber }

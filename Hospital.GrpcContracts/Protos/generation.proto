@@ -19,8 +19,8 @@ message GenerationRequest {
 
 
 message StartGeneration {
-  int32 total_count = 1; // Общее количество Appointment
-  int32 batch_size = 2;  // Размер батча
+  int32 total_count = 1; 
+  int32 batch_size = 2;  
 }
 
 
@@ -32,13 +32,8 @@ message BatchAck {
 message GenerationResponse {
 
   oneof payload {
-    // Батч данных
     AppointmentBatch batch = 1;
-
-    // Генерация завершена
     GenerationCompleted completed = 2;
-
-    // Ошибка генерации
     GenerationError error = 3;
   }
 }
@@ -68,19 +63,18 @@ message DoctorGrpc {
   string name = 3;
   string surname = 4;
   string patronymic = 5;
-  string birth_date = 6; // ISO-8601
+  string birth_date = 6; 
   string specialization_id = 7;
   int32 experience = 8;
 }
 
-// --- Patient ---
 message PatientGrpc {
   string id = 1;
   string passport_number = 2;
   string name = 3;
   string surname = 4;
   string patronymic = 5;
-  string birth_date = 6; // ISO-8601
+  string birth_date = 6; 
   string address = 7;
   GenderGrpc gender = 8;
   BloodTypeGrpc blood_type = 9;
@@ -88,16 +82,14 @@ message PatientGrpc {
   string phone_number = 11;
 }
 
-// --- Appointment ---
 message AppointmentGrpc {
   string id = 1;
-  string appointment_time = 2; // ISO-8601
+  string appointment_time = 2;
   string office_number = 3;
   bool is_repeated = 4;
   string patient_id = 5;
   string doctor_id = 6;
 }
-
 
 enum GenderGrpc {
   MALE = 0;

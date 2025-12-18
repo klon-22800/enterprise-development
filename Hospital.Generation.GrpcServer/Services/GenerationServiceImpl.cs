@@ -4,10 +4,16 @@ using Hospital.Grpc.Contracts;
 
 namespace Hospital.Generation.GrpcServer.Services;
 
+/// <summary>
+/// Класс для генерации сущностей DoctorGrpc, PatientGrpc и AppointmentGrpc
+/// </summary>
 public class GenerationServiceImpl : GenerationService.GenerationServiceBase
 {
     private readonly Faker _faker = new("ru");
 
+    /// <summary>
+    /// Генерация и отправка списков DTO-сущностей по батчей с учетом ответа от клиента
+    /// </summary>
     public override async Task Generate(
         IAsyncStreamReader<GenerationRequest> requestStream,
         IServerStreamWriter<GenerationResponse> responseStream,
@@ -24,7 +30,7 @@ public class GenerationServiceImpl : GenerationService.GenerationServiceBase
                 "Вячеславович", "Николаевич", "Александровна", "Сергеевна", "Михайловна"
             };
 
-         List<string> SpecializationIds = new()
+         List<string> specializationIds = new()
             {
                 "b0000000-0000-0000-0000-000000000001", "b0000000-0000-0000-0000-000000000002",
                 "b0000000-0000-0000-0000-000000000003", "b0000000-0000-0000-0000-000000000004",
@@ -34,95 +40,95 @@ public class GenerationServiceImpl : GenerationService.GenerationServiceBase
 
             };
 
-    await foreach (var request in requestStream.ReadAllAsync())
-        {
-            switch (request.PayloadCase)
+        await foreach (var request in requestStream.ReadAllAsync())
             {
-                case GenerationRequest.PayloadOneofCase.Start:
-                    totalCount = request.Start.TotalCount;
-                    batchSize = request.Start.BatchSize;
-                    currentBatch = 0;
+                switch (request.PayloadCase)
+                {
+                    case GenerationRequest.PayloadOneofCase.Start:
+                        totalCount = request.Start.TotalCount;
+                        batchSize = request.Start.BatchSize;
+                        currentBatch = 0;
 
-                    while (totalCount > 0 && !context.CancellationToken.IsCancellationRequested)
-                    {
-                        currentBatch++;
-                        var thisBatchSize = Math.Min(batchSize, totalCount);
-
-                        var doctors = Enumerable.Range(1, thisBatchSize)
-                            .Select(_ => new DoctorGrpc
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                PassportNumber = _faker.Random.Replace("#### ####"),
-                                Name = _faker.Name.FirstName(),
-                                Surname = _faker.Name.LastName(),
-                                Patronymic = _faker.PickRandom(patronymics),
-                                BirthDate = _faker.Date.Past(60, DateTime.Now.AddYears(-20)).ToString("yyyy-MM-dd"),
-                                SpecializationId = _faker.PickRandom(SpecializationIds),
-                                Experience = _faker.Random.Int(1, 40)
-                            }).ToList();
-
-                        var patients = Enumerable.Range(1, thisBatchSize)
-                            .Select(_ => new PatientGrpc
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                PassportNumber = _faker.Random.Replace("#### ####"),
-                                Name = _faker.Name.FirstName(),
-                                Surname = _faker.Name.LastName(),
-                                Patronymic = _faker.PickRandom(patronymics),
-                                BirthDate = _faker.Date.Past(80, DateTime.Now.AddYears(-18)).ToString("yyyy-MM-dd"),
-                                Address = _faker.Address.FullAddress(),
-                                Gender = _faker.PickRandom<GenderGrpc>(),
-                                BloodType = _faker.PickRandom<BloodTypeGrpc>(),
-                                RhesusFactor = _faker.PickRandom<RhesusFactorGrpc>(),
-                                PhoneNumber = _faker.Phone.PhoneNumber()
-                            }).ToList();
-
-                        var appointments = Enumerable.Range(1, thisBatchSize)
-                            .Select(i => new AppointmentGrpc
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                AppointmentTime = _faker.Date.Future().ToString("o"),
-                                OfficeNumber = _faker.Random.Int(1, 50).ToString(),
-                                IsRepeated = _faker.Random.Bool(),
-                                DoctorId = doctors[i - 1].Id,
-                                PatientId = patients[i - 1].Id
-                            }).ToList();
-
-                        var batchResponse = new GenerationResponse
+                        while (totalCount > 0 && !context.CancellationToken.IsCancellationRequested)
                         {
-                            Batch = new AppointmentBatch
+                            currentBatch++;
+                            var thisBatchSize = Math.Min(batchSize, totalCount);
+
+                            var doctors = Enumerable.Range(1, thisBatchSize)
+                                .Select(_ => new DoctorGrpc
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    PassportNumber = _faker.Random.Replace("#### ####"),
+                                    Name = _faker.Name.FirstName(),
+                                    Surname = _faker.Name.LastName(),
+                                    Patronymic = _faker.PickRandom(patronymics),
+                                    BirthDate = _faker.Date.Past(60, DateTime.Now.AddYears(-20)).ToString("yyyy-MM-dd"),
+                                    SpecializationId = _faker.PickRandom(specializationIds),
+                                    Experience = _faker.Random.Int(1, 40)
+                                }).ToList();
+
+                            var patients = Enumerable.Range(1, thisBatchSize)
+                                .Select(_ => new PatientGrpc
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    PassportNumber = _faker.Random.Replace("#### ####"),
+                                    Name = _faker.Name.FirstName(),
+                                    Surname = _faker.Name.LastName(),
+                                    Patronymic = _faker.PickRandom(patronymics),
+                                    BirthDate = _faker.Date.Past(80, DateTime.Now.AddYears(-18)).ToString("yyyy-MM-dd"),
+                                    Address = _faker.Address.FullAddress(),
+                                    Gender = _faker.PickRandom<GenderGrpc>(),
+                                    BloodType = _faker.PickRandom<BloodTypeGrpc>(),
+                                    RhesusFactor = _faker.PickRandom<RhesusFactorGrpc>(),
+                                    PhoneNumber = _faker.Phone.PhoneNumber()
+                                }).ToList();
+
+                            var appointments = Enumerable.Range(1, thisBatchSize)
+                                .Select(i => new AppointmentGrpc
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    AppointmentTime = _faker.Date.Future().ToString("o"),
+                                    OfficeNumber = _faker.Random.Int(1, 50).ToString(),
+                                    IsRepeated = _faker.Random.Bool(),
+                                    DoctorId = doctors[i - 1].Id,
+                                    PatientId = patients[i - 1].Id
+                                }).ToList();
+
+                            var batchResponse = new GenerationResponse
                             {
-                                BatchNumber = currentBatch
-                            }
-                        };
+                                Batch = new AppointmentBatch
+                                {
+                                    BatchNumber = currentBatch
+                                }
+                            };
 
-                        batchResponse.Batch.Doctors.AddRange(doctors);
-                        batchResponse.Batch.Patients.AddRange(patients);
-                        batchResponse.Batch.Appointments.AddRange(appointments);
+                            batchResponse.Batch.Doctors.AddRange(doctors);
+                            batchResponse.Batch.Patients.AddRange(patients);
+                            batchResponse.Batch.Appointments.AddRange(appointments);
 
-                        await responseStream.WriteAsync(batchResponse);
+                            await responseStream.WriteAsync(batchResponse);
 
-                        totalCount -= thisBatchSize;
+                            totalCount -= thisBatchSize;
 
-                        // Ждём ack от клиента перед отправкой следующего батча
-                        if (!await WaitForAck(requestStream, context, currentBatch))
-                            return;
-                    }
+                            if (!await WaitForAck(requestStream, context, currentBatch))
+                                return;
+                        }
 
-                    // Генерация завершена
-                    await responseStream.WriteAsync(new GenerationResponse
-                    {
-                        Completed = new GenerationCompleted { TotalBatches = currentBatch }
-                    });
-                    break;
+                        await responseStream.WriteAsync(new GenerationResponse
+                        {
+                            Completed = new GenerationCompleted { TotalBatches = currentBatch }
+                        });
+                        break;
 
-                case GenerationRequest.PayloadOneofCase.Ack:
-                    // Игнорируем здесь, ack обрабатывается внутри WaitForAck
-                    break;
+                    case GenerationRequest.PayloadOneofCase.Ack:
+                        break;
+                }
             }
-        }
     }
 
+    /// <summary>
+    /// Ожидание ответа от клиента об успешной обработке батча
+    /// </summary>
     private async Task<bool> WaitForAck(IAsyncStreamReader<GenerationRequest> requestStream, ServerCallContext context, int currentBatch)
     {
         try
