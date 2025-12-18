@@ -12,7 +12,8 @@ public static class EnumMappers
     public static Gender ToDomain(this GenderGrpc grpcGender) => grpcGender switch
     {
         GenderGrpc.Male => Gender.Male,
-        GenderGrpc.Female => Gender.Female
+        GenderGrpc.Female => Gender.Female,
+        _ => throw new ArgumentOutOfRangeException(nameof(grpcGender), grpcGender.ToString())
     };
 
     /// <summary>

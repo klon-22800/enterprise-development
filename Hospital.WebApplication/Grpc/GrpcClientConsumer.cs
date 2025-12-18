@@ -32,6 +32,7 @@ public class GrpcClientConsumer
     /// </summary>
     /// <param name="totalCount" > Общее кол-во каждой сущности </param>
     /// <param name="batchSize" > Кол-во сущностей в одном батче </param>
+    /// <param name="cancellationToken" > cancellationToken </param>
     public async Task StartGenerationAsync(int totalCount, int batchSize, CancellationToken cancellationToken = default)
     {
         using var call = _grpcClient.Generate();
