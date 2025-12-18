@@ -2,7 +2,6 @@
 
 namespace Hospital.WebApplication.Grpc;
 
-
 /// <summary>
 /// Контроллер для запсука процесса генерации. 
 /// </summary>

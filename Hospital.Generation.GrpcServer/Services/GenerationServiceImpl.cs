@@ -7,9 +7,8 @@ namespace Hospital.Generation.GrpcServer.Services;
 /// <summary>
 /// Класс для генерации сущностей DoctorGrpc, PatientGrpc и AppointmentGrpc
 /// </summary>
-public class GenerationServiceImpl : GenerationService.GenerationServiceBase
+public class GenerationServiceImpl(Faker faker) : GenerationService.GenerationServiceBase
 {
-    private readonly Faker _faker = new("ru");
 
     /// <summary>
     /// Генерация и отправка списков DTO-сущностей по батчей с учетом ответа от клиента
@@ -58,38 +57,38 @@ public class GenerationServiceImpl : GenerationService.GenerationServiceBase
                                 .Select(_ => new DoctorGrpc
                                 {
                                     Id = Guid.NewGuid().ToString(),
-                                    PassportNumber = _faker.Random.Replace("#### ####"),
-                                    Name = _faker.Name.FirstName(),
-                                    Surname = _faker.Name.LastName(),
-                                    Patronymic = _faker.PickRandom(patronymics),
-                                    BirthDate = _faker.Date.Past(60, DateTime.Now.AddYears(-20)).ToString("yyyy-MM-dd"),
-                                    SpecializationId = _faker.PickRandom(specializationIds),
-                                    Experience = _faker.Random.Int(1, 40)
+                                    PassportNumber = faker.Random.Replace("#### ####"),
+                                    Name = faker.Name.FirstName(),
+                                    Surname = faker.Name.LastName(),
+                                    Patronymic = faker.PickRandom(patronymics),
+                                    BirthDate = faker.Date.Past(60, DateTime.Now.AddYears(-20)).ToString("yyyy-MM-dd"),
+                                    SpecializationId = faker.PickRandom(specializationIds),
+                                    Experience = faker.Random.Int(1, 40)
                                 }).ToList();
 
                             var patients = Enumerable.Range(1, thisBatchSize)
                                 .Select(_ => new PatientGrpc
                                 {
                                     Id = Guid.NewGuid().ToString(),
-                                    PassportNumber = _faker.Random.Replace("#### ####"),
-                                    Name = _faker.Name.FirstName(),
-                                    Surname = _faker.Name.LastName(),
-                                    Patronymic = _faker.PickRandom(patronymics),
-                                    BirthDate = _faker.Date.Past(80, DateTime.Now.AddYears(-18)).ToString("yyyy-MM-dd"),
-                                    Address = _faker.Address.FullAddress(),
-                                    Gender = _faker.PickRandom<GenderGrpc>(),
-                                    BloodType = _faker.PickRandom<BloodTypeGrpc>(),
-                                    RhesusFactor = _faker.PickRandom<RhesusFactorGrpc>(),
-                                    PhoneNumber = _faker.Phone.PhoneNumber()
+                                    PassportNumber = faker.Random.Replace("#### ####"),
+                                    Name = faker.Name.FirstName(),
+                                    Surname = faker.Name.LastName(),
+                                    Patronymic = faker.PickRandom(patronymics),
+                                    BirthDate = faker.Date.Past(80, DateTime.Now.AddYears(-18)).ToString("yyyy-MM-dd"),
+                                    Address = faker.Address.FullAddress(),
+                                    Gender = faker.PickRandom<GenderGrpc>(),
+                                    BloodType = faker.PickRandom<BloodTypeGrpc>(),
+                                    RhesusFactor = faker.PickRandom<RhesusFactorGrpc>(),
+                                    PhoneNumber = faker.Phone.PhoneNumber()
                                 }).ToList();
 
                             var appointments = Enumerable.Range(1, thisBatchSize)
                                 .Select(i => new AppointmentGrpc
                                 {
                                     Id = Guid.NewGuid().ToString(),
-                                    AppointmentTime = _faker.Date.Future().ToString("o"),
-                                    OfficeNumber = _faker.Random.Int(1, 50).ToString(),
-                                    IsRepeated = _faker.Random.Bool(),
+                                    AppointmentTime = faker.Date.Future().ToString("o"),
+                                    OfficeNumber = faker.Random.Int(1, 50).ToString(),
+                                    IsRepeated = faker.Random.Bool(),
                                     DoctorId = doctors[i - 1].Id,
                                     PatientId = patients[i - 1].Id
                                 }).ToList();
