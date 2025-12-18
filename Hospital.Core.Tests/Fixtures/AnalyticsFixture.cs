@@ -20,9 +20,9 @@ public class AnalyticsFixture
         Data = new TestDataFixture();
 
         var specializationRepoMock = new Mock<IRepository<Specialization>>();
-        var doctorRepoMock = new Mock<IRepository<Doctor>>();
+        var doctorRepoMock = new Mock<IDoctorRepository>();
         var patientRepoMock = new Mock<IRepository<Patient>>();
-        var appointmentRepoMock = new Mock<IRepository<Appointment>>();
+        var appointmentRepoMock = new Mock<IAppointmentRepository>();
 
         specializationRepoMock
             .Setup(x => x.GetAllAsync())

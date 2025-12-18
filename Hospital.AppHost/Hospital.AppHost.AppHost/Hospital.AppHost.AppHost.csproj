@@ -16,6 +16,7 @@
 	 <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.3.1" />
   </ItemGroup>
     <ItemGroup>
+	    <ProjectReference Include="..\..\Hospital.Generation.GrpcServer\Hospital.Generation.GrpcServer.csproj" />
 	    <ProjectReference Include="..\..\Hospital.WebApplication\Hospital.WebApplication.csproj" />	
     </ItemGroup>
 

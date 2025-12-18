@@ -1,4 +1,4 @@
-﻿namespace Hospital.Core.Domain.Models.Enums;
+﻿namespace Hospital.Core.Domain.Shared.Enums;
 
 /// <summary>
 /// Represents the Rhesus (Rh) factor of blood.

@@ -14,4 +14,10 @@ var api = builder.AddProject<Projects.Hospital_WebApplication>("hospital-api")
     .WaitFor(db);         
 
 
+builder.AddProject<Projects.Hospital_Generation_GrpcServer>("hospital-generation-grpcserver");
+
+
+
+
+
 builder.Build().Run();

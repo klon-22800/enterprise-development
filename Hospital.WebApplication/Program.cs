@@ -1,8 +1,10 @@
 using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Repository;
 using Hospital.Core.Domain.Service;
+using Hospital.Grpc.Contracts;
 using Hospital.Infrastructure;
 using Hospital.Infrastructure.Repositories;
+using Hospital.WebApplication.Grpc;
 using Hospital.WebApplication.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -36,6 +38,18 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 });
 
+
+
+
+
+
+builder.Services.AddGrpcClient<GenerationService.GenerationServiceClient>(o =>
+{
+    o.Address = new Uri("http://localhost:5002"); // адрес твоего gRPC-сервера
+});
+
+builder.Services.AddScoped<GrpcClientConsumer>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -43,6 +57,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<HospitalDbContext>();
     db.Database.Migrate();
 }
+
 
 if (app.Environment.IsDevelopment())
 {

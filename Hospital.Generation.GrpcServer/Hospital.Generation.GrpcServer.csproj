@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bogus" Version="35.6.5" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.62.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.62.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+
+		<ProjectReference Include="..\Hospital.AppHost\Hospital.AppHost.ServiceDefaults\Hospital.AppHost.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\Hospital.GrpcContracts\Hospital.GrpcContracts.csproj" />
+		<Protobuf Include="..\Hospital.GrpcContracts\Protos\generation.proto"
+				  GrpcServices="Server"
+				  Link="Protos\generation.proto" />
+	</ItemGroup>
+
+</Project>
