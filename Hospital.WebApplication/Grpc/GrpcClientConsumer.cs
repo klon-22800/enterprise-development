@@ -2,6 +2,7 @@
 using Hospital.Core.Domain.Models;
 using Hospital.Core.Domain.Repository;
 using Hospital.Grpc.Contracts;
+using Hospital.WebApplication.Grpc.Mappers;
 
 namespace Hospital.WebApplication.Grpc;
 
@@ -54,51 +55,17 @@ public class GrpcClientConsumer
 
                 foreach (var doc in batch.Doctors)
                 {
-                    var doctor = new Doctor
-                    {
-                        Id = Guid.Parse(doc.Id),
-                        PassportNumber = doc.PassportNumber,
-                        Name = doc.Name,
-                        Surname = doc.Surname,
-                        Patronymic = doc.Patronymic,
-                        BirthDate = DateOnly.Parse(doc.BirthDate),
-                        SpecializationId = Guid.Parse(doc.SpecializationId),
-                        Experience = doc.Experience
-                    };
-                    await _doctorRepo.CreateAsync(doctor);
+                    await _doctorRepo.CreateAsync(doc.ToDomain());
                 }
 
                 foreach (var pat in batch.Patients)
                 {
-                    var patient = new Patient
-                    {
-                        Id = Guid.Parse(pat.Id),
-                        PassportNumber = pat.PassportNumber,
-                        Name = pat.Name,
-                        Surname = pat.Surname,
-                        Patronymic = pat.Patronymic,
-                        BirthDate = DateOnly.Parse(pat.BirthDate),
-                        Address = pat.Address,
-                        Gender = pat.Gender.ToDomain(),
-                        BloodType = pat.BloodType.ToDomain(),
-                        RhesusFactor = pat.RhesusFactor.ToDomain(),
-                        PhoneNumber = pat.PhoneNumber
-                    };
-                    await _patientRepo.CreateAsync(patient);
+                    await _patientRepo.CreateAsync(pat.ToDomain());
                 }
 
                 foreach (var app in batch.Appointments)
                 {
-                    var appointment = new Appointment
-                    {
-                        Id = Guid.Parse(app.Id),
-                        AppointmentTime = DateTime.Parse(app.AppointmentTime),
-                        OfficeNumber = app.OfficeNumber,
-                        IsRepeated = app.IsRepeated,
-                        DoctorId = Guid.Parse(app.DoctorId),
-                        PatientId = Guid.Parse(app.PatientId)
-                    };
-                    await _appointmentRepo.CreateAsync(appointment);
+                    await _appointmentRepo.CreateAsync(app.ToDomain());
                 }
 
                 await call.RequestStream.WriteAsync(new GenerationRequest

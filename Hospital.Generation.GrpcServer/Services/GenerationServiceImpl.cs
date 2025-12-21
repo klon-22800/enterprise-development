@@ -13,23 +13,16 @@ public class GenerationServiceImpl(Faker faker) : GenerationService.GenerationSe
     /// <summary>
     /// Генерация и отправка списков DTO-сущностей по батчей с учетом ответа от клиента
     /// </summary>
-    public override async Task Generate(
-        IAsyncStreamReader<GenerationRequest> requestStream,
-        IServerStreamWriter<GenerationResponse> responseStream,
-        ServerCallContext context)
-    {
-        var totalCount = 0;
-        var batchSize = 0;
-        var currentBatch = 0;
+    /// 
 
-        var patronymics = new[]
+    private static readonly List<string> _patronymics = new()
             {
                 "Иванович", "Петрович", "Сергеевич", "Александрович",
                 "Михайлович", "Романович", "Алексеевич", "Степанович",
                 "Вячеславович", "Николаевич", "Александровна", "Сергеевна", "Михайловна"
             };
 
-         List<string> specializationIds = new()
+    private static readonly List<string> _specializationIds = new()
             {
                 "b0000000-0000-0000-0000-000000000001", "b0000000-0000-0000-0000-000000000002",
                 "b0000000-0000-0000-0000-000000000003", "b0000000-0000-0000-0000-000000000004",
@@ -38,6 +31,15 @@ public class GenerationServiceImpl(Faker faker) : GenerationService.GenerationSe
                 "b0000000-0000-0000-0000-000000000009", "b0000000-0000-0000-0000-000000000000",
 
             };
+
+    public override async Task Generate(
+        IAsyncStreamReader<GenerationRequest> requestStream,
+        IServerStreamWriter<GenerationResponse> responseStream,
+        ServerCallContext context)
+    {
+        var totalCount = 0;
+        var batchSize = 0;
+        var currentBatch = 0;
 
         await foreach (var request in requestStream.ReadAllAsync())
             {
@@ -60,9 +62,9 @@ public class GenerationServiceImpl(Faker faker) : GenerationService.GenerationSe
                                     PassportNumber = faker.Random.Replace("#### ####"),
                                     Name = faker.Name.FirstName(),
                                     Surname = faker.Name.LastName(),
-                                    Patronymic = faker.PickRandom(patronymics),
+                                    Patronymic = faker.PickRandom(_patronymics),
                                     BirthDate = faker.Date.Past(60, DateTime.Now.AddYears(-20)).ToString("yyyy-MM-dd"),
-                                    SpecializationId = faker.PickRandom(specializationIds),
+                                    SpecializationId = faker.PickRandom(_specializationIds),
                                     Experience = faker.Random.Int(1, 40)
                                 }).ToList();
 
@@ -73,7 +75,7 @@ public class GenerationServiceImpl(Faker faker) : GenerationService.GenerationSe
                                     PassportNumber = faker.Random.Replace("#### ####"),
                                     Name = faker.Name.FirstName(),
                                     Surname = faker.Name.LastName(),
-                                    Patronymic = faker.PickRandom(patronymics),
+                                    Patronymic = faker.PickRandom(_patronymics),
                                     BirthDate = faker.Date.Past(80, DateTime.Now.AddYears(-18)).ToString("yyyy-MM-dd"),
                                     Address = faker.Address.FullAddress(),
                                     Gender = faker.PickRandom<GenderGrpc>(),
